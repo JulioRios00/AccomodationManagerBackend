@@ -35,8 +35,9 @@ Represents a physical accommodation unit (apartment / house).
 | keysCount | keys_count | INT | DEFAULT 0 | Number of resident keys — from column F |
 | securityKeysCount | security_keys_count | INT | DEFAULT 0 | Security keys (Sec K) — from column G |
 | fobCount | fob_count | INT | DEFAULT 0 | Electronic fob count — from column H |
-| electricityStatus | electricity_status | VARCHAR(20) | NULLABLE | e.g. `Pre`, `Active` — from column I |
-| gasStatus | gas_status | VARCHAR(20) | NULLABLE | e.g. `Pre`, `Active` — from column J |
+| electricityStatus | electricity_status | VARCHAR(20) | NULLABLE | e.g. `Pre`, `Active`, `Inactive` — from column I |
+| gasStatus | gas_status | VARCHAR(20) | NULLABLE | e.g. `Pre`, `Active`, `Inactive` — from column J |
+| active | active | BOOLEAN | DEFAULT true | Soft-delete flag — `false` means logically deleted |
 | createdAt | created_at | TIMESTAMP | AUTO | Record creation timestamp |
 | updatedAt | updated_at | TIMESTAMP | AUTO | Last update timestamp |
 
@@ -56,6 +57,7 @@ Represents an individual bed within a property. One property has many beds.
 | bedSize | bed_size | VARCHAR(20) | NOT NULL | Bed size: `Single`, `Double` — from column N |
 | depositAmount | deposit_amount | DECIMAL(10,2) | DEFAULT 0 | Standard deposit in € — from column P |
 | rentAmount | rent_amount | DECIMAL(10,2) | DEFAULT 0 | Monthly rent in € — from column Q |
+| active | active | BOOLEAN | DEFAULT true | Soft-delete flag — `false` means logically deleted |
 | createdAt | created_at | TIMESTAMP | AUTO | |
 | updatedAt | updated_at | TIMESTAMP | AUTO | |
 
@@ -78,6 +80,7 @@ Represents a person who lives or has lived in a bed.
 | iban | iban | VARCHAR(50) | NULLABLE | Bank IBAN for payments — from column W |
 | emergencyContact | emergency_contact | TEXT | NULLABLE | Emergency contact name + mobile — from column X |
 | source | source | VARCHAR(100) | NULLABLE | Lead / referral source — from column Y |
+| active | active | BOOLEAN | DEFAULT true | Soft-delete flag — `false` means logically deleted |
 | createdAt | created_at | TIMESTAMP | AUTO | |
 | updatedAt | updated_at | TIMESTAMP | AUTO | |
 
@@ -102,6 +105,7 @@ A bed can have at most one `active` booking and at most one `upcoming` booking s
 | isTemporary | is_temporary | BOOLEAN | DEFAULT false | `true` = upcoming/next resident (columns AH–AT) |
 | status | status | ENUM | NOT NULL | `active` / `upcoming` / `completed` |
 | comments | comments | TEXT | NULLABLE | Notes on the booking — from column AE |
+| active | active | BOOLEAN | DEFAULT true | Soft-delete flag — `false` means logically deleted |
 | createdAt | created_at | TIMESTAMP | AUTO | |
 | updatedAt | updated_at | TIMESTAMP | AUTO | |
 
@@ -155,3 +159,18 @@ A bed can have at most one `active` booking and at most one `upcoming` booking s
 | AR | HeadResident (temp) | Booking.isHeadResident (isTemporary=true) |
 | AS | Check-in (temp) | Booking.checkInDate (isTemporary=true) |
 | AT | ContractEnd (temp) | Booking.contractEndDate (isTemporary=true) |
+
+---
+
+## Soft Delete
+
+All four entities use a logical delete pattern via the `active` boolean column instead of physically removing rows.
+
+| Action | Behaviour |
+|--------|-----------|
+| `DELETE /api/properties/:id` | Sets `active = false` on the property, all its beds, and all bookings for those beds |
+| `DELETE /api/beds/:id` | Sets `active = false` on the bed and all its bookings |
+| `DELETE /api/residents/:id` | Sets `active = false` on the resident only |
+| `DELETE /api/bookings/:id` | Sets `active = false` on the booking only |
+
+All `GET` endpoints filter `WHERE active = true`, so deactivated records are invisible to the API but remain in the database for audit purposes.
