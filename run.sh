@@ -124,6 +124,19 @@ export DB_USER="$CURRENT_USER"
 export DB_PASSWORD=""
 export DB_NAME="$DB_NAME"
 export PORT="3001"
+export CORS_ORIGIN="http://localhost:3000"
+export NODE_ENV="development"
+
+# Load extra vars from backend/.env (SENTRY_DSN, CLERK_SECRET_KEY, etc.)
+# Only export keys not already set by this script (DB_*, PORT, etc.)
+if [[ -f "$BACKEND_DIR/.env" ]]; then
+  while IFS='=' read -r key rest; do
+    [[ -z "$key" || "$key" == \#* ]] && continue
+    # Skip vars we set explicitly above
+    [[ "$key" =~ ^(DB_HOST|DB_PORT|DB_USER|DB_PASSWORD|DB_NAME|PORT|CORS_ORIGIN|NODE_ENV)$ ]] && continue
+    export "$key"="$rest"
+  done < "$BACKEND_DIR/.env"
+fi
 
 # ─────────────────────────────────────────────────────────────────────────────
 step "Installing dependencies"
@@ -157,9 +170,8 @@ step "Starting services"
 log "Starting NestJS backend on http://localhost:${PORT} ..."
 (
   cd "$BACKEND_DIR"
+  # All required vars are already exported; NODE_OPTIONS added for Node 18 compat
   NODE_OPTIONS="--experimental-global-webcrypto" \
-  DB_HOST="$DB_HOST" DB_PORT="$DB_PORT" DB_USER="$DB_USER" \
-  DB_PASSWORD="$DB_PASSWORD" DB_NAME="$DB_NAME" PORT="$PORT" \
     node_modules/.bin/nest start \
     2>&1 | while IFS= read -r line; do echo -e "${BLUE}[backend]${NC} $line"; done
 ) &
