@@ -132,8 +132,8 @@ export NODE_ENV="development"
 if [[ -f "$BACKEND_DIR/.env" ]]; then
   while IFS='=' read -r key rest; do
     [[ -z "$key" || "$key" == \#* ]] && continue
-    # Skip vars we set explicitly above
-    [[ "$key" =~ ^(DB_HOST|DB_PORT|DB_USER|DB_PASSWORD|DB_NAME|PORT|CORS_ORIGIN|NODE_ENV)$ ]] && continue
+    # Skip vars we set explicitly above, and DATABASE_URL (use local DB_* instead)
+    [[ "$key" =~ ^(DATABASE_URL|DB_HOST|DB_PORT|DB_USER|DB_PASSWORD|DB_NAME|PORT|CORS_ORIGIN|NODE_ENV)$ ]] && continue
     export "$key"="$rest"
   done < "$BACKEND_DIR/.env"
 fi
