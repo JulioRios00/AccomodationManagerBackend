@@ -20,10 +20,7 @@ let GetPropertiesUseCase = class GetPropertiesUseCase {
         this.propertyRepo = propertyRepo;
     }
     async execute() {
-        console.log('[GetPropertiesUseCase] fetching all active properties');
-        const results = await this.propertyRepo.findAll();
-        console.log(`[GetPropertiesUseCase] found ${results.length} properties:`, results.map(p => ({ id: p.id, code: p.code, active: p.active })));
-        return results;
+        return this.propertyRepo.findAll();
     }
 };
 exports.GetPropertiesUseCase = GetPropertiesUseCase;

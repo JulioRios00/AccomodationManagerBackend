@@ -10,6 +10,11 @@ export interface SaveResidentDto {
     iban?: string | null;
     emergencyContact?: string | null;
     source?: string | null;
+    paymentDueDay?: number | null;
+    comments?: string | null;
+    delinquent?: boolean;
+    hasObservation?: boolean;
+    observation?: string | null;
 }
 export declare class SaveResidentUseCase {
     private readonly repo;

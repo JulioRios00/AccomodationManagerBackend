@@ -16,6 +16,7 @@ exports.ImportController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const import_xlsx_use_case_1 = require("../../application/use-cases/import-xlsx.use-case");
+const roles_decorator_1 = require("../decorators/roles.decorator");
 let ImportController = class ImportController {
     constructor(importXlsxUseCase) {
         this.importXlsxUseCase = importXlsxUseCase;
@@ -30,6 +31,7 @@ let ImportController = class ImportController {
 exports.ImportController = ImportController;
 __decorate([
     (0, common_1.Post)(),
+    (0, roles_decorator_1.Roles)('sysadmin', 'manager'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
     __param(0, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),

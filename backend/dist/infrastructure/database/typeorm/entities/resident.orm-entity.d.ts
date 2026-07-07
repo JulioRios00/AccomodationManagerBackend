@@ -9,6 +9,11 @@ export declare class ResidentOrmEntity {
     iban: string;
     emergencyContact: string;
     source: string;
+    paymentDueDay: number;
+    comments: string;
+    delinquent: boolean;
+    hasObservation: boolean;
+    observation: string;
     active: boolean;
     createdAt: Date;
     updatedAt: Date;

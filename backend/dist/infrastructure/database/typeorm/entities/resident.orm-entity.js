@@ -52,6 +52,26 @@ __decorate([
     __metadata("design:type", String)
 ], ResidentOrmEntity.prototype, "source", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ nullable: true, type: 'int' }),
+    __metadata("design:type", Number)
+], ResidentOrmEntity.prototype, "paymentDueDay", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", String)
+], ResidentOrmEntity.prototype, "comments", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], ResidentOrmEntity.prototype, "delinquent", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], ResidentOrmEntity.prototype, "hasObservation", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", String)
+], ResidentOrmEntity.prototype, "observation", void 0);
+__decorate([
     (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)
 ], ResidentOrmEntity.prototype, "active", void 0);

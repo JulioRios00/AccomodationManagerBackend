@@ -49,6 +49,11 @@ let ResidentTypeOrmRepository = class ResidentTypeOrmRepository {
         r.iban = entity.iban;
         r.emergencyContact = entity.emergencyContact;
         r.source = entity.source;
+        r.paymentDueDay = entity.paymentDueDay ?? null;
+        r.comments = entity.comments ?? null;
+        r.delinquent = entity.delinquent ?? false;
+        r.hasObservation = entity.hasObservation ?? false;
+        r.observation = entity.observation ?? null;
         r.createdAt = entity.createdAt;
         r.updatedAt = entity.updatedAt;
         return r;

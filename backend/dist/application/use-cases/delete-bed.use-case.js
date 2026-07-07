@@ -22,16 +22,11 @@ let DeleteBedUseCase = class DeleteBedUseCase {
         this.bookingRepo = bookingRepo;
     }
     async execute(id) {
-        console.log(`[DeleteBedUseCase] execute(${id})`);
         const existing = await this.bedRepo.findById(id);
-        console.log(`[DeleteBedUseCase] findById result:`, existing ? 'found' : 'not found');
         if (!existing)
             throw new common_1.NotFoundException(`Bed ${id} not found`);
-        console.log(`[DeleteBedUseCase] deleting bookings for bed ${id}`);
         await this.bookingRepo.deleteByBedId(id);
-        console.log(`[DeleteBedUseCase] bookings deleted, deleting bed ${id}`);
         await this.bedRepo.delete(id);
-        console.log(`[DeleteBedUseCase] bed ${id} deleted`);
     }
 };
 exports.DeleteBedUseCase = DeleteBedUseCase;

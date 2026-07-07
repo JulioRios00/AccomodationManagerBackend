@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const get_residents_use_case_1 = require("../../application/use-cases/get-residents.use-case");
 const save_resident_use_case_1 = require("../../application/use-cases/save-resident.use-case");
 const delete_resident_use_case_1 = require("../../application/use-cases/delete-resident.use-case");
+const roles_decorator_1 = require("../decorators/roles.decorator");
 let ResidentsController = class ResidentsController {
     constructor(getResidents, saveResident, deleteResident) {
         this.getResidents = getResidents;
@@ -45,6 +46,7 @@ __decorate([
 ], ResidentsController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Post)(),
+    (0, roles_decorator_1.Roles)('sysadmin', 'manager'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -52,6 +54,7 @@ __decorate([
 ], ResidentsController.prototype, "create", null);
 __decorate([
     (0, common_1.Put)(':id'),
+    (0, roles_decorator_1.Roles)('sysadmin', 'manager', 'administrator'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -61,6 +64,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.HttpCode)(204),
+    (0, roles_decorator_1.Roles)('sysadmin', 'manager'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

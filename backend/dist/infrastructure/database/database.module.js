@@ -14,14 +14,57 @@ const property_orm_entity_1 = require("./typeorm/entities/property.orm-entity");
 const bed_orm_entity_1 = require("./typeorm/entities/bed.orm-entity");
 const resident_orm_entity_1 = require("./typeorm/entities/resident.orm-entity");
 const booking_orm_entity_1 = require("./typeorm/entities/booking.orm-entity");
+const landlord_orm_entity_1 = require("./typeorm/entities/landlord.orm-entity");
+const property_administrator_orm_entity_1 = require("./typeorm/entities/property-administrator.orm-entity");
+const service_provider_orm_entity_1 = require("./typeorm/entities/service-provider.orm-entity");
+const maintenance_ticket_orm_entity_1 = require("./typeorm/entities/maintenance-ticket.orm-entity");
+const ticket_activity_log_orm_entity_1 = require("./typeorm/entities/ticket-activity-log.orm-entity");
+const key_log_orm_entity_1 = require("./typeorm/entities/key-log.orm-entity");
+const checkout_record_orm_entity_1 = require("./typeorm/entities/checkout-record.orm-entity");
+const rent_payment_orm_entity_1 = require("./typeorm/entities/rent-payment.orm-entity");
+const landlord_payment_orm_entity_1 = require("./typeorm/entities/landlord-payment.orm-entity");
+const deposit_transaction_orm_entity_1 = require("./typeorm/entities/deposit-transaction.orm-entity");
+const company_orm_entity_1 = require("./typeorm/entities/company.orm-entity");
+const audit_log_orm_entity_1 = require("./typeorm/entities/audit-log.orm-entity");
 const property_typeorm_repository_1 = require("./typeorm/repositories/property.typeorm-repository");
 const bed_typeorm_repository_1 = require("./typeorm/repositories/bed.typeorm-repository");
 const resident_typeorm_repository_1 = require("./typeorm/repositories/resident.typeorm-repository");
 const booking_typeorm_repository_1 = require("./typeorm/repositories/booking.typeorm-repository");
+const landlord_typeorm_repository_1 = require("./typeorm/repositories/landlord.typeorm-repository");
+const property_administrator_typeorm_repository_1 = require("./typeorm/repositories/property-administrator.typeorm-repository");
+const service_provider_typeorm_repository_1 = require("./typeorm/repositories/service-provider.typeorm-repository");
+const maintenance_ticket_typeorm_repository_1 = require("./typeorm/repositories/maintenance-ticket.typeorm-repository");
+const ticket_activity_log_typeorm_repository_1 = require("./typeorm/repositories/ticket-activity-log.typeorm-repository");
+const key_log_typeorm_repository_1 = require("./typeorm/repositories/key-log.typeorm-repository");
+const checkout_record_typeorm_repository_1 = require("./typeorm/repositories/checkout-record.typeorm-repository");
+const rent_payment_typeorm_repository_1 = require("./typeorm/repositories/rent-payment.typeorm-repository");
+const landlord_payment_typeorm_repository_1 = require("./typeorm/repositories/landlord-payment.typeorm-repository");
+const deposit_transaction_typeorm_repository_1 = require("./typeorm/repositories/deposit-transaction.typeorm-repository");
+const company_typeorm_repository_1 = require("./typeorm/repositories/company.typeorm-repository");
+const audit_log_typeorm_repository_1 = require("./typeorm/repositories/audit-log.typeorm-repository");
 const property_repository_1 = require("../../domain/property/property.repository");
 const bed_repository_1 = require("../../domain/bed/bed.repository");
 const resident_repository_1 = require("../../domain/resident/resident.repository");
 const booking_repository_1 = require("../../domain/booking/booking.repository");
+const landlord_repository_1 = require("../../domain/landlord/landlord.repository");
+const property_administrator_repository_1 = require("../../domain/property-administrator/property-administrator.repository");
+const service_provider_repository_1 = require("../../domain/service-provider/service-provider.repository");
+const maintenance_ticket_repository_1 = require("../../domain/maintenance-ticket/maintenance-ticket.repository");
+const ticket_activity_log_repository_1 = require("../../domain/ticket-activity-log/ticket-activity-log.repository");
+const key_log_repository_1 = require("../../domain/key-log/key-log.repository");
+const checkout_record_repository_1 = require("../../domain/checkout-record/checkout-record.repository");
+const rent_payment_repository_1 = require("../../domain/rent-payment/rent-payment.repository");
+const landlord_payment_repository_1 = require("../../domain/landlord-payment/landlord-payment.repository");
+const deposit_transaction_repository_1 = require("../../domain/deposit-transaction/deposit-transaction.repository");
+const company_repository_1 = require("../../domain/company/company.repository");
+const audit_log_repository_1 = require("../../domain/audit-log/audit-log.repository");
+const ALL_ENTITIES = [
+    property_orm_entity_1.PropertyOrmEntity, bed_orm_entity_1.BedOrmEntity, resident_orm_entity_1.ResidentOrmEntity, booking_orm_entity_1.BookingOrmEntity,
+    landlord_orm_entity_1.LandlordOrmEntity, property_administrator_orm_entity_1.PropertyAdministratorOrmEntity, service_provider_orm_entity_1.ServiceProviderOrmEntity,
+    maintenance_ticket_orm_entity_1.MaintenanceTicketOrmEntity, ticket_activity_log_orm_entity_1.TicketActivityLogOrmEntity, key_log_orm_entity_1.KeyLogOrmEntity,
+    checkout_record_orm_entity_1.CheckoutRecordOrmEntity, rent_payment_orm_entity_1.RentPaymentOrmEntity, rent_payment_orm_entity_1.RentPaymentInstallmentOrmEntity,
+    landlord_payment_orm_entity_1.LandlordPaymentOrmEntity, deposit_transaction_orm_entity_1.DepositTransactionOrmEntity, company_orm_entity_1.CompanyOrmEntity, audit_log_orm_entity_1.AuditLogOrmEntity,
+];
 let DatabaseModule = class DatabaseModule {
 };
 exports.DatabaseModule = DatabaseModule;
@@ -32,6 +75,10 @@ exports.DatabaseModule = DatabaseModule = __decorate([
                 imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],
                 useFactory: (config) => {
+                    const databaseUrl = config.get('DATABASE_URL');
+                    if (databaseUrl) {
+                        return { type: 'postgres', url: databaseUrl, entities: ALL_ENTITIES, synchronize: true, ssl: { rejectUnauthorized: false } };
+                    }
                     const password = config.get('DB_PASSWORD', '');
                     return {
                         type: 'postgres',
@@ -40,25 +87,39 @@ exports.DatabaseModule = DatabaseModule = __decorate([
                         username: config.get('DB_USER', 'postgres'),
                         password: password || undefined,
                         database: config.get('DB_NAME', 'accommodation'),
-                        entities: [property_orm_entity_1.PropertyOrmEntity, bed_orm_entity_1.BedOrmEntity, resident_orm_entity_1.ResidentOrmEntity, booking_orm_entity_1.BookingOrmEntity],
+                        entities: ALL_ENTITIES,
                         synchronize: true,
                     };
                 },
             }),
-            typeorm_1.TypeOrmModule.forFeature([
-                property_orm_entity_1.PropertyOrmEntity,
-                bed_orm_entity_1.BedOrmEntity,
-                resident_orm_entity_1.ResidentOrmEntity,
-                booking_orm_entity_1.BookingOrmEntity,
-            ]),
+            typeorm_1.TypeOrmModule.forFeature(ALL_ENTITIES),
         ],
         providers: [
             { provide: property_repository_1.PROPERTY_REPOSITORY, useClass: property_typeorm_repository_1.PropertyTypeOrmRepository },
             { provide: bed_repository_1.BED_REPOSITORY, useClass: bed_typeorm_repository_1.BedTypeOrmRepository },
             { provide: resident_repository_1.RESIDENT_REPOSITORY, useClass: resident_typeorm_repository_1.ResidentTypeOrmRepository },
             { provide: booking_repository_1.BOOKING_REPOSITORY, useClass: booking_typeorm_repository_1.BookingTypeOrmRepository },
+            { provide: landlord_repository_1.LANDLORD_REPOSITORY, useClass: landlord_typeorm_repository_1.LandlordTypeOrmRepository },
+            { provide: property_administrator_repository_1.PROPERTY_ADMINISTRATOR_REPOSITORY, useClass: property_administrator_typeorm_repository_1.PropertyAdministratorTypeOrmRepository },
+            { provide: service_provider_repository_1.SERVICE_PROVIDER_REPOSITORY, useClass: service_provider_typeorm_repository_1.ServiceProviderTypeOrmRepository },
+            { provide: maintenance_ticket_repository_1.MAINTENANCE_TICKET_REPOSITORY, useClass: maintenance_ticket_typeorm_repository_1.MaintenanceTicketTypeOrmRepository },
+            { provide: ticket_activity_log_repository_1.TICKET_ACTIVITY_LOG_REPOSITORY, useClass: ticket_activity_log_typeorm_repository_1.TicketActivityLogTypeOrmRepository },
+            { provide: key_log_repository_1.KEY_LOG_REPOSITORY, useClass: key_log_typeorm_repository_1.KeyLogTypeOrmRepository },
+            { provide: checkout_record_repository_1.CHECKOUT_RECORD_REPOSITORY, useClass: checkout_record_typeorm_repository_1.CheckoutRecordTypeOrmRepository },
+            { provide: rent_payment_repository_1.RENT_PAYMENT_REPOSITORY, useClass: rent_payment_typeorm_repository_1.RentPaymentTypeOrmRepository },
+            { provide: rent_payment_repository_1.RENT_PAYMENT_INSTALLMENT_REPOSITORY, useClass: rent_payment_typeorm_repository_1.RentPaymentInstallmentTypeOrmRepository },
+            { provide: landlord_payment_repository_1.LANDLORD_PAYMENT_REPOSITORY, useClass: landlord_payment_typeorm_repository_1.LandlordPaymentTypeOrmRepository },
+            { provide: deposit_transaction_repository_1.DEPOSIT_TRANSACTION_REPOSITORY, useClass: deposit_transaction_typeorm_repository_1.DepositTransactionTypeOrmRepository },
+            { provide: company_repository_1.COMPANY_REPOSITORY, useClass: company_typeorm_repository_1.CompanyTypeOrmRepository },
+            { provide: audit_log_repository_1.AUDIT_LOG_REPOSITORY, useClass: audit_log_typeorm_repository_1.AuditLogTypeOrmRepository },
         ],
-        exports: [property_repository_1.PROPERTY_REPOSITORY, bed_repository_1.BED_REPOSITORY, resident_repository_1.RESIDENT_REPOSITORY, booking_repository_1.BOOKING_REPOSITORY],
+        exports: [
+            property_repository_1.PROPERTY_REPOSITORY, bed_repository_1.BED_REPOSITORY, resident_repository_1.RESIDENT_REPOSITORY, booking_repository_1.BOOKING_REPOSITORY,
+            landlord_repository_1.LANDLORD_REPOSITORY, property_administrator_repository_1.PROPERTY_ADMINISTRATOR_REPOSITORY, service_provider_repository_1.SERVICE_PROVIDER_REPOSITORY,
+            maintenance_ticket_repository_1.MAINTENANCE_TICKET_REPOSITORY, ticket_activity_log_repository_1.TICKET_ACTIVITY_LOG_REPOSITORY, key_log_repository_1.KEY_LOG_REPOSITORY,
+            checkout_record_repository_1.CHECKOUT_RECORD_REPOSITORY, rent_payment_repository_1.RENT_PAYMENT_REPOSITORY, rent_payment_repository_1.RENT_PAYMENT_INSTALLMENT_REPOSITORY,
+            landlord_payment_repository_1.LANDLORD_PAYMENT_REPOSITORY, deposit_transaction_repository_1.DEPOSIT_TRANSACTION_REPOSITORY, company_repository_1.COMPANY_REPOSITORY, audit_log_repository_1.AUDIT_LOG_REPOSITORY,
+        ],
     })
 ], DatabaseModule);
 //# sourceMappingURL=database.module.js.map

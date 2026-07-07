@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const get_beds_use_case_1 = require("../../application/use-cases/get-beds.use-case");
 const save_bed_use_case_1 = require("../../application/use-cases/save-bed.use-case");
 const delete_bed_use_case_1 = require("../../application/use-cases/delete-bed.use-case");
+const roles_decorator_1 = require("../decorators/roles.decorator");
 let BedsController = class BedsController {
     constructor(getBeds, saveBed, deleteBed) {
         this.getBeds = getBeds;
@@ -33,15 +34,7 @@ let BedsController = class BedsController {
         return this.saveBed.execute({ ...dto, id });
     }
     async remove(id) {
-        console.log(`[BedsController] DELETE /beds/${id}`);
-        try {
-            await this.deleteBed.execute(id);
-            console.log(`[BedsController] DELETE /beds/${id} — success`);
-        }
-        catch (err) {
-            console.error(`[BedsController] DELETE /beds/${id} — error:`, err);
-            throw err;
-        }
+        await this.deleteBed.execute(id);
     }
 };
 exports.BedsController = BedsController;
@@ -54,6 +47,7 @@ __decorate([
 ], BedsController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Post)(),
+    (0, roles_decorator_1.Roles)('sysadmin', 'manager'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -61,6 +55,7 @@ __decorate([
 ], BedsController.prototype, "create", null);
 __decorate([
     (0, common_1.Put)(':id'),
+    (0, roles_decorator_1.Roles)('sysadmin', 'manager'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -70,6 +65,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.HttpCode)(204),
+    (0, roles_decorator_1.Roles)('sysadmin', 'manager'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

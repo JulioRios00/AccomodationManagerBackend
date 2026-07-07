@@ -42,6 +42,10 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ default: 0 }),
     __metadata("design:type", Number)
+], PropertyOrmEntity.prototype, "officeKeysCount", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 0 }),
+    __metadata("design:type", Number)
 ], PropertyOrmEntity.prototype, "keysCount", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: 0 }),
@@ -52,13 +56,117 @@ __decorate([
     __metadata("design:type", Number)
 ], PropertyOrmEntity.prototype, "fobCount", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ length: 50, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "keyCode", void 0);
+__decorate([
     (0, typeorm_1.Column)({ length: 20, nullable: true }),
     __metadata("design:type", String)
 ], PropertyOrmEntity.prototype, "electricityStatus", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ length: 50, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "electricityMprn", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "electricitySupplier", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "electricityAccountNumber", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "electricityKeypadCode", void 0);
+__decorate([
     (0, typeorm_1.Column)({ length: 20, nullable: true }),
     __metadata("design:type", String)
 ], PropertyOrmEntity.prototype, "gasStatus", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 50, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "gasGprn", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "gasSupplier", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "gasAccountNumber", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "gasPin", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "wasteSupplier", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "wasteAccountNumber", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 200, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "wasteEmail", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "wastePassword", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 50, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "wastePaymentType", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'decimal', precision: 10, scale: 2, nullable: true }),
+    __metadata("design:type", Number)
+], PropertyOrmEntity.prototype, "wasteMonthlyAmount", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 50, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "wasteStatus", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "internetSupplier", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "internetAccountNumber", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 200, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "internetEmail", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "internetUsername", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "internetPassword", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 50, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "internetPaymentType", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 50, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "internetStatus", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'date', nullable: true }),
+    __metadata("design:type", Date)
+], PropertyOrmEntity.prototype, "internetContractEndDate", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "salesDescription", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'uuid', nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "landlordId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)
