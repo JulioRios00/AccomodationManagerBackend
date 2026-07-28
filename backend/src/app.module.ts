@@ -26,6 +26,7 @@ import { LandlordPaymentsController } from './presentation/controllers/landlord-
 import { DepositTransactionsController } from './presentation/controllers/deposit-transactions.controller';
 import { ReportsController } from './presentation/controllers/reports.controller';
 import { CompaniesController } from './presentation/controllers/companies.controller';
+import { BedroomsController } from './presentation/controllers/bedrooms.controller';
 
 import { ImportXlsxUseCase } from './application/use-cases/import-xlsx.use-case';
 import { GetDashboardStatsUseCase } from './application/use-cases/get-dashboard-stats.use-case';
@@ -72,6 +73,9 @@ import { GetDelinquencyReportUseCase } from './application/use-cases/get-delinqu
 import { GetCompaniesUseCase } from './application/use-cases/get-companies.use-case';
 import { SaveCompanyUseCase } from './application/use-cases/save-company.use-case';
 import { DeleteCompanyUseCase } from './application/use-cases/delete-company.use-case';
+import { GetBedroomsUseCase } from './application/use-cases/get-bedrooms.use-case';
+import { SaveBedroomUseCase } from './application/use-cases/save-bedroom.use-case';
+import { DeleteBedroomUseCase } from './application/use-cases/delete-bedroom.use-case';
 
 @Module({
   imports: [
@@ -94,7 +98,7 @@ import { DeleteCompanyUseCase } from './application/use-cases/delete-company.use
     ResidentsController, BookingsController, HealthController,
     LandlordsController, ServiceProvidersController, MaintenanceTicketsController,
     KeyLogsController, CheckoutController, RentPaymentsController, LandlordPaymentsController,
-    DepositTransactionsController, ReportsController, CompaniesController,
+    DepositTransactionsController, ReportsController, CompaniesController, BedroomsController,
   ],
   providers: [
     { provide: APP_FILTER, useClass: SentryGlobalFilter },
@@ -115,6 +119,7 @@ import { DeleteCompanyUseCase } from './application/use-cases/delete-company.use
     GetDepositTransactionsUseCase, SaveDepositTransactionUseCase, DeleteDepositTransactionUseCase,
     GetDelinquencyReportUseCase,
     GetCompaniesUseCase, SaveCompanyUseCase, DeleteCompanyUseCase,
+    GetBedroomsUseCase, SaveBedroomUseCase, DeleteBedroomUseCase,
   ],
 })
 export class AppModule implements NestModule {

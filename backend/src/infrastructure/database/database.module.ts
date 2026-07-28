@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { PropertyOrmEntity } from './typeorm/entities/property.orm-entity';
 import { BedOrmEntity } from './typeorm/entities/bed.orm-entity';
+import { BedroomOrmEntity } from './typeorm/entities/bedroom.orm-entity';
 import { ResidentOrmEntity } from './typeorm/entities/resident.orm-entity';
 import { BookingOrmEntity } from './typeorm/entities/booking.orm-entity';
 import { LandlordOrmEntity } from './typeorm/entities/landlord.orm-entity';
@@ -21,6 +22,7 @@ import { AuditLogOrmEntity } from './typeorm/entities/audit-log.orm-entity';
 
 import { PropertyTypeOrmRepository } from './typeorm/repositories/property.typeorm-repository';
 import { BedTypeOrmRepository } from './typeorm/repositories/bed.typeorm-repository';
+import { BedroomTypeOrmRepository } from './typeorm/repositories/bedroom.typeorm-repository';
 import { ResidentTypeOrmRepository } from './typeorm/repositories/resident.typeorm-repository';
 import { BookingTypeOrmRepository } from './typeorm/repositories/booking.typeorm-repository';
 import { LandlordTypeOrmRepository } from './typeorm/repositories/landlord.typeorm-repository';
@@ -38,6 +40,7 @@ import { AuditLogTypeOrmRepository } from './typeorm/repositories/audit-log.type
 
 import { PROPERTY_REPOSITORY } from '../../domain/property/property.repository';
 import { BED_REPOSITORY } from '../../domain/bed/bed.repository';
+import { BEDROOM_REPOSITORY } from '../../domain/bedroom/bedroom.repository';
 import { RESIDENT_REPOSITORY } from '../../domain/resident/resident.repository';
 import { BOOKING_REPOSITORY } from '../../domain/booking/booking.repository';
 import { LANDLORD_REPOSITORY } from '../../domain/landlord/landlord.repository';
@@ -54,7 +57,7 @@ import { COMPANY_REPOSITORY } from '../../domain/company/company.repository';
 import { AUDIT_LOG_REPOSITORY } from '../../domain/audit-log/audit-log.repository';
 
 const ALL_ENTITIES = [
-  PropertyOrmEntity, BedOrmEntity, ResidentOrmEntity, BookingOrmEntity,
+  PropertyOrmEntity, BedOrmEntity, BedroomOrmEntity, ResidentOrmEntity, BookingOrmEntity,
   LandlordOrmEntity, PropertyAdministratorOrmEntity, ServiceProviderOrmEntity,
   MaintenanceTicketOrmEntity, TicketActivityLogOrmEntity, KeyLogOrmEntity,
   CheckoutRecordOrmEntity, RentPaymentOrmEntity, RentPaymentInstallmentOrmEntity,
@@ -89,6 +92,7 @@ const ALL_ENTITIES = [
   providers: [
     { provide: PROPERTY_REPOSITORY, useClass: PropertyTypeOrmRepository },
     { provide: BED_REPOSITORY, useClass: BedTypeOrmRepository },
+    { provide: BEDROOM_REPOSITORY, useClass: BedroomTypeOrmRepository },
     { provide: RESIDENT_REPOSITORY, useClass: ResidentTypeOrmRepository },
     { provide: BOOKING_REPOSITORY, useClass: BookingTypeOrmRepository },
     { provide: LANDLORD_REPOSITORY, useClass: LandlordTypeOrmRepository },
@@ -106,7 +110,7 @@ const ALL_ENTITIES = [
     { provide: AUDIT_LOG_REPOSITORY, useClass: AuditLogTypeOrmRepository },
   ],
   exports: [
-    PROPERTY_REPOSITORY, BED_REPOSITORY, RESIDENT_REPOSITORY, BOOKING_REPOSITORY,
+    PROPERTY_REPOSITORY, BED_REPOSITORY, BEDROOM_REPOSITORY, RESIDENT_REPOSITORY, BOOKING_REPOSITORY,
     LANDLORD_REPOSITORY, PROPERTY_ADMINISTRATOR_REPOSITORY, SERVICE_PROVIDER_REPOSITORY,
     MAINTENANCE_TICKET_REPOSITORY, TICKET_ACTIVITY_LOG_REPOSITORY, KEY_LOG_REPOSITORY,
     CHECKOUT_RECORD_REPOSITORY, RENT_PAYMENT_REPOSITORY, RENT_PAYMENT_INSTALLMENT_REPOSITORY,
