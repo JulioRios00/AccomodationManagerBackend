@@ -22,6 +22,10 @@ export class MaintenanceTicketTypeOrmRepository implements IMaintenanceTicketRep
     return e ? this.toDomain(e) : null;
   }
 
+  async findQueue(): Promise<MaintenanceTicket[]> {
+    return (await this.repo.find({ where: { status: 'open', active: true }, order: { createdAt: 'ASC' } })).map(this.toDomain);
+  }
+
   async getNextOrderNumber(): Promise<string> {
     const result = await this.repo
       .createQueryBuilder('t')
