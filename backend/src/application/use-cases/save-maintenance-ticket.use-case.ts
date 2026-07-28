@@ -4,6 +4,9 @@ import { IMaintenanceTicketRepository, MAINTENANCE_TICKET_REPOSITORY } from '../
 export interface SaveMaintenanceTicketDto {
   id?: string;
   propertyId: string;
+  category?: string | null;
+  bedId?: string | null;
+  residentId?: string | null;
   serviceProviderId?: string | null;
   title: string;
   descriptionRequested?: string | null;

@@ -5,6 +5,9 @@ export class MaintenanceTicketOrmEntity {
   @PrimaryGeneratedColumn('uuid') id: string;
   @Column({ length: 20 }) orderNumber: string;
   @Column('uuid') propertyId: string;
+  @Column({ length: 30, nullable: true }) category: string;
+  @Column({ type: 'uuid', nullable: true }) bedId: string;
+  @Column({ type: 'uuid', nullable: true }) residentId: string;
   @Column({ type: 'uuid', nullable: true }) serviceProviderId: string;
   @Column({ length: 300 }) title: string;
   @Column({ type: 'text', nullable: true }) descriptionRequested: string;
