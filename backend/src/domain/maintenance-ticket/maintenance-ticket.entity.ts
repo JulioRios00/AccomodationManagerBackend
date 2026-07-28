@@ -1,7 +1,12 @@
+export type TicketCategory = 'plumbing' | 'electrical' | 'internet' | 'other';
+
 export class MaintenanceTicket {
   id: string;
   orderNumber: string;
   propertyId: string;
+  category: TicketCategory | null;
+  bedId: string | null;
+  residentId: string | null;
   serviceProviderId: string | null;
   title: string;
   descriptionRequested: string | null;
