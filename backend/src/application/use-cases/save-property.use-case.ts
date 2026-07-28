@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Property } from '../../domain/property/property.entity';
 import { IPropertyRepository, PROPERTY_REPOSITORY } from '../../domain/property/property.repository';
 
@@ -39,6 +39,8 @@ export interface SavePropertyDto {
   internetStatus?: string | null;
   internetContractEndDate?: string | null;
   salesDescription?: string | null;
+  eirCode?: string | null;
+  propertyType?: string | null;
   landlordId?: string | null;
 }
 
@@ -52,8 +54,24 @@ export class SavePropertyUseCase {
     if (dto.id) {
       const existing = await this.repo.findById(dto.id);
       if (!existing) throw new NotFoundException(`Property ${dto.id} not found`);
-      return this.repo.save(dto as any);
     }
+    await this.validateUniqueness(dto);
+    if (dto.id) return this.repo.save(dto as any);
     return this.repo.save({ ...dto, active: true } as any);
+  }
+
+  private async validateUniqueness(dto: SavePropertyDto): Promise<void> {
+    if (dto.electricityMprn) {
+      const conflict = await this.repo.findByMprn(dto.electricityMprn);
+      if (conflict && conflict.id !== dto.id) {
+        throw new BadRequestException(`MPRN ${dto.electricityMprn} is already in use by property ${conflict.code}`);
+      }
+    }
+    if (dto.gasGprn) {
+      const conflict = await this.repo.findByGprn(dto.gasGprn);
+      if (conflict && conflict.id !== dto.id) {
+        throw new BadRequestException(`GPRN ${dto.gasGprn} is already in use by property ${conflict.code}`);
+      }
+    }
   }
 }

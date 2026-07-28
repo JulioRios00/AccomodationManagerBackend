@@ -48,6 +48,10 @@ export class Property {
   // Sales
   salesDescription: string | null;
 
+  // Identification
+  eirCode: string | null;
+  propertyType: string | null;
+
   // Relations
   landlordId: string | null;
 
