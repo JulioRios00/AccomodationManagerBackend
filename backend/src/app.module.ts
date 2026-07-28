@@ -76,6 +76,8 @@ import { DeleteCompanyUseCase } from './application/use-cases/delete-company.use
 import { GetBedroomsUseCase } from './application/use-cases/get-bedrooms.use-case';
 import { SaveBedroomUseCase } from './application/use-cases/save-bedroom.use-case';
 import { DeleteBedroomUseCase } from './application/use-cases/delete-bedroom.use-case';
+import { ClaimTicketUseCase } from './application/use-cases/claim-ticket.use-case';
+import { CloseTicketUseCase } from './application/use-cases/close-ticket.use-case';
 
 @Module({
   imports: [
@@ -111,7 +113,7 @@ import { DeleteBedroomUseCase } from './application/use-cases/delete-bedroom.use
     GetLandlordsUseCase, SaveLandlordUseCase, DeleteLandlordUseCase,
     GetPropertyAdministratorsUseCase, SavePropertyAdministratorUseCase, DeletePropertyAdministratorUseCase,
     GetServiceProvidersUseCase, SaveServiceProviderUseCase, DeleteServiceProviderUseCase,
-    GetMaintenanceTicketsUseCase, SaveMaintenanceTicketUseCase, DeleteMaintenanceTicketUseCase, AddTicketActivityUseCase,
+    GetMaintenanceTicketsUseCase, SaveMaintenanceTicketUseCase, DeleteMaintenanceTicketUseCase, AddTicketActivityUseCase, ClaimTicketUseCase, CloseTicketUseCase,
     GetKeyLogsUseCase, SaveKeyLogUseCase, DeleteKeyLogUseCase,
     CheckoutUseCase,
     GetRentPaymentsUseCase, SaveRentPaymentUseCase, DeleteRentPaymentUseCase, AddRentInstallmentUseCase,
