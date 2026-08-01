@@ -6,6 +6,7 @@ import { ImportMaintenanceUseCase } from '../../application/use-cases/import-mai
 import { ImportDepositsUseCase } from '../../application/use-cases/import-deposits.use-case';
 import { ImportLandlordPaymentsUseCase } from '../../application/use-cases/import-landlord-payments.use-case';
 import { ImportResidentPaymentsUseCase } from '../../application/use-cases/import-resident-payments.use-case';
+import { ImportResidentsToClerkUseCase } from '../../application/use-cases/import-residents-to-clerk.use-case';
 import { Roles } from '../decorators/roles.decorator';
 
 const fileGuard = (file: Express.Multer.File) => {
@@ -21,6 +22,7 @@ export class ImportController {
     private readonly importDepositsUseCase: ImportDepositsUseCase,
     private readonly importLandlordPaymentsUseCase: ImportLandlordPaymentsUseCase,
     private readonly importResidentPaymentsUseCase: ImportResidentPaymentsUseCase,
+    private readonly importResidentsToClerkUseCase: ImportResidentsToClerkUseCase,
   ) {}
 
   @Post()
@@ -75,5 +77,17 @@ export class ImportController {
     fileGuard(file);
     const result = await this.importResidentPaymentsUseCase.execute(file.buffer);
     return { message: `Imported ${result.imported} resident payments (${result.skipped} skipped)`, ...result };
+  }
+
+  @Post('residents-clerk')
+  @Roles('sysadmin', 'manager')
+  @UseInterceptors(FileInterceptor('file'))
+  async importResidentsToClerk(@UploadedFile() file: Express.Multer.File) {
+    fileGuard(file);
+    const result = await this.importResidentsToClerkUseCase.execute(file.buffer);
+    return {
+      message: `Clerk provisioning complete — ${result.created} created, ${result.skipped} skipped, ${result.errors.length} errors`,
+      ...result,
+    };
   }
 }

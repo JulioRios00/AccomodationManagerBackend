@@ -19,6 +19,8 @@ import { HealthController } from './presentation/controllers/health.controller';
 import { LandlordsController } from './presentation/controllers/landlords.controller';
 import { ServiceProvidersController } from './presentation/controllers/service-providers.controller';
 import { MaintenanceTicketsController } from './presentation/controllers/maintenance-tickets.controller';
+import { PortalController } from './presentation/controllers/portal.controller';
+import { SubmitResidentTicketUseCase } from './application/use-cases/submit-resident-ticket.use-case';
 import { KeyLogsController } from './presentation/controllers/key-logs.controller';
 import { CheckoutController } from './presentation/controllers/checkout.controller';
 import { RentPaymentsController } from './presentation/controllers/rent-payments.controller';
@@ -30,6 +32,7 @@ import { BedroomsController } from './presentation/controllers/bedrooms.controll
 
 import { ImportXlsxUseCase } from './application/use-cases/import-xlsx.use-case';
 import { ImportBillsUseCase } from './application/use-cases/import-bills.use-case';
+import { ImportResidentsToClerkUseCase } from './application/use-cases/import-residents-to-clerk.use-case';
 import { ImportMaintenanceUseCase } from './application/use-cases/import-maintenance.use-case';
 import { ImportDepositsUseCase } from './application/use-cases/import-deposits.use-case';
 import { ImportLandlordPaymentsUseCase } from './application/use-cases/import-landlord-payments.use-case';
@@ -109,7 +112,7 @@ import { PropertySpacesController } from './presentation/controllers/property-sp
   controllers: [
     ImportController, DashboardController, PropertiesController, BedsController,
     ResidentsController, BookingsController, HealthController,
-    LandlordsController, ServiceProvidersController, MaintenanceTicketsController,
+    LandlordsController, ServiceProvidersController, MaintenanceTicketsController, PortalController,
     KeyLogsController, CheckoutController, RentPaymentsController, LandlordPaymentsController,
     DepositTransactionsController, ReportsController, CompaniesController, BedroomsController,
     PropertySpacesController,
@@ -118,7 +121,7 @@ import { PropertySpacesController } from './presentation/controllers/property-sp
     { provide: APP_FILTER, useClass: SentryGlobalFilter },
     { provide: APP_GUARD, useClass: ClerkAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
-    ImportXlsxUseCase, ImportBillsUseCase, ImportMaintenanceUseCase, ImportDepositsUseCase, ImportLandlordPaymentsUseCase, ImportResidentPaymentsUseCase,
+    ImportXlsxUseCase, ImportBillsUseCase, ImportMaintenanceUseCase, ImportDepositsUseCase, ImportLandlordPaymentsUseCase, ImportResidentPaymentsUseCase, ImportResidentsToClerkUseCase,
     GetDashboardStatsUseCase,
     GetPropertiesUseCase, GetBedsUseCase, GetResidentsUseCase, GetBookingsUseCase,
     SavePropertyUseCase, DeletePropertyUseCase, SaveBedUseCase, DeleteBedUseCase,
@@ -126,7 +129,7 @@ import { PropertySpacesController } from './presentation/controllers/property-sp
     GetLandlordsUseCase, SaveLandlordUseCase, DeleteLandlordUseCase,
     GetPropertyAdministratorsUseCase, SavePropertyAdministratorUseCase, DeletePropertyAdministratorUseCase,
     GetServiceProvidersUseCase, SaveServiceProviderUseCase, DeleteServiceProviderUseCase,
-    GetMaintenanceTicketsUseCase, SaveMaintenanceTicketUseCase, DeleteMaintenanceTicketUseCase, AddTicketActivityUseCase, ClaimTicketUseCase, CloseTicketUseCase,
+    GetMaintenanceTicketsUseCase, SaveMaintenanceTicketUseCase, DeleteMaintenanceTicketUseCase, AddTicketActivityUseCase, ClaimTicketUseCase, CloseTicketUseCase, SubmitResidentTicketUseCase,
     GetKeyLogsUseCase, SaveKeyLogUseCase, DeleteKeyLogUseCase,
     CheckoutUseCase,
     GetRentPaymentsUseCase, SaveRentPaymentUseCase, DeleteRentPaymentUseCase, AddRentInstallmentUseCase,
