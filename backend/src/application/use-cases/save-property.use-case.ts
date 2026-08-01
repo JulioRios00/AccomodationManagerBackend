@@ -1,6 +1,7 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Property } from '../../domain/property/property.entity';
 import { IPropertyRepository, PROPERTY_REPOSITORY } from '../../domain/property/property.repository';
+import { ILandlordRepository, LANDLORD_REPOSITORY } from '../../domain/landlord/landlord.repository';
 
 export interface SavePropertyDto {
   id?: string;
@@ -50,10 +51,13 @@ export interface SavePropertyDto {
   landlordId?: string | null;
 }
 
+const ALLOWED_PROPERTY_TYPES = ['House', 'Apartment', 'Duplex', 'Studio Block', 'Other'];
+
 @Injectable()
 export class SavePropertyUseCase {
   constructor(
     @Inject(PROPERTY_REPOSITORY) private readonly repo: IPropertyRepository,
+    @Inject(LANDLORD_REPOSITORY) private readonly landlordRepo: ILandlordRepository,
   ) {}
 
   async execute(dto: SavePropertyDto): Promise<Property> {
@@ -61,9 +65,36 @@ export class SavePropertyUseCase {
       const existing = await this.repo.findById(dto.id);
       if (!existing) throw new NotFoundException(`Property ${dto.id} not found`);
     }
-    await this.validateUniqueness(dto);
-    if (dto.id) return this.repo.save(dto as any);
-    return this.repo.save({ ...dto, active: true } as any);
+    const normalized = this.normalize(dto);
+    this.validateFields(normalized);
+    await this.validateUniqueness(normalized);
+    await this.validateLandlord(normalized);
+    if (normalized.id) return this.repo.save(normalized as any);
+    return this.repo.save({ ...normalized, active: true } as any);
+  }
+
+  private normalize(dto: SavePropertyDto): SavePropertyDto {
+    const result = { ...dto };
+    if (result.eirCode != null) {
+      result.eirCode = result.eirCode.trim().toUpperCase() || null;
+    }
+    return result;
+  }
+
+  private validateFields(dto: SavePropertyDto): void {
+    if (dto.eirCode && dto.eirCode.length > 10) {
+      throw new BadRequestException('EirCode must be 10 characters or fewer');
+    }
+    if (dto.propertyType != null && !ALLOWED_PROPERTY_TYPES.includes(dto.propertyType)) {
+      throw new BadRequestException(`Invalid property type "${dto.propertyType}". Allowed: ${ALLOWED_PROPERTY_TYPES.join(', ')}`);
+    }
+  }
+
+  private async validateLandlord(dto: SavePropertyDto): Promise<void> {
+    if (dto.landlordId) {
+      const landlord = await this.landlordRepo.findById(dto.landlordId);
+      if (!landlord) throw new NotFoundException(`Landlord ${dto.landlordId} not found`);
+    }
   }
 
   private async validateUniqueness(dto: SavePropertyDto): Promise<void> {
