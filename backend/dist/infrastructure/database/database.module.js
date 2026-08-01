@@ -12,6 +12,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const config_1 = require("@nestjs/config");
 const property_orm_entity_1 = require("./typeorm/entities/property.orm-entity");
 const bed_orm_entity_1 = require("./typeorm/entities/bed.orm-entity");
+const bedroom_orm_entity_1 = require("./typeorm/entities/bedroom.orm-entity");
 const resident_orm_entity_1 = require("./typeorm/entities/resident.orm-entity");
 const booking_orm_entity_1 = require("./typeorm/entities/booking.orm-entity");
 const landlord_orm_entity_1 = require("./typeorm/entities/landlord.orm-entity");
@@ -26,8 +27,11 @@ const landlord_payment_orm_entity_1 = require("./typeorm/entities/landlord-payme
 const deposit_transaction_orm_entity_1 = require("./typeorm/entities/deposit-transaction.orm-entity");
 const company_orm_entity_1 = require("./typeorm/entities/company.orm-entity");
 const audit_log_orm_entity_1 = require("./typeorm/entities/audit-log.orm-entity");
+const property_space_orm_entity_1 = require("./typeorm/entities/property-space.orm-entity");
+const space_item_orm_entity_1 = require("./typeorm/entities/space-item.orm-entity");
 const property_typeorm_repository_1 = require("./typeorm/repositories/property.typeorm-repository");
 const bed_typeorm_repository_1 = require("./typeorm/repositories/bed.typeorm-repository");
+const bedroom_typeorm_repository_1 = require("./typeorm/repositories/bedroom.typeorm-repository");
 const resident_typeorm_repository_1 = require("./typeorm/repositories/resident.typeorm-repository");
 const booking_typeorm_repository_1 = require("./typeorm/repositories/booking.typeorm-repository");
 const landlord_typeorm_repository_1 = require("./typeorm/repositories/landlord.typeorm-repository");
@@ -42,8 +46,10 @@ const landlord_payment_typeorm_repository_1 = require("./typeorm/repositories/la
 const deposit_transaction_typeorm_repository_1 = require("./typeorm/repositories/deposit-transaction.typeorm-repository");
 const company_typeorm_repository_1 = require("./typeorm/repositories/company.typeorm-repository");
 const audit_log_typeorm_repository_1 = require("./typeorm/repositories/audit-log.typeorm-repository");
+const property_space_typeorm_repository_1 = require("./typeorm/repositories/property-space.typeorm-repository");
 const property_repository_1 = require("../../domain/property/property.repository");
 const bed_repository_1 = require("../../domain/bed/bed.repository");
+const bedroom_repository_1 = require("../../domain/bedroom/bedroom.repository");
 const resident_repository_1 = require("../../domain/resident/resident.repository");
 const booking_repository_1 = require("../../domain/booking/booking.repository");
 const landlord_repository_1 = require("../../domain/landlord/landlord.repository");
@@ -58,12 +64,14 @@ const landlord_payment_repository_1 = require("../../domain/landlord-payment/lan
 const deposit_transaction_repository_1 = require("../../domain/deposit-transaction/deposit-transaction.repository");
 const company_repository_1 = require("../../domain/company/company.repository");
 const audit_log_repository_1 = require("../../domain/audit-log/audit-log.repository");
+const property_space_repository_1 = require("../../domain/property-space/property-space.repository");
 const ALL_ENTITIES = [
-    property_orm_entity_1.PropertyOrmEntity, bed_orm_entity_1.BedOrmEntity, resident_orm_entity_1.ResidentOrmEntity, booking_orm_entity_1.BookingOrmEntity,
+    property_orm_entity_1.PropertyOrmEntity, bed_orm_entity_1.BedOrmEntity, bedroom_orm_entity_1.BedroomOrmEntity, resident_orm_entity_1.ResidentOrmEntity, booking_orm_entity_1.BookingOrmEntity,
     landlord_orm_entity_1.LandlordOrmEntity, property_administrator_orm_entity_1.PropertyAdministratorOrmEntity, service_provider_orm_entity_1.ServiceProviderOrmEntity,
     maintenance_ticket_orm_entity_1.MaintenanceTicketOrmEntity, ticket_activity_log_orm_entity_1.TicketActivityLogOrmEntity, key_log_orm_entity_1.KeyLogOrmEntity,
     checkout_record_orm_entity_1.CheckoutRecordOrmEntity, rent_payment_orm_entity_1.RentPaymentOrmEntity, rent_payment_orm_entity_1.RentPaymentInstallmentOrmEntity,
     landlord_payment_orm_entity_1.LandlordPaymentOrmEntity, deposit_transaction_orm_entity_1.DepositTransactionOrmEntity, company_orm_entity_1.CompanyOrmEntity, audit_log_orm_entity_1.AuditLogOrmEntity,
+    property_space_orm_entity_1.PropertySpaceOrmEntity, space_item_orm_entity_1.SpaceItemOrmEntity,
 ];
 let DatabaseModule = class DatabaseModule {
 };
@@ -97,6 +105,7 @@ exports.DatabaseModule = DatabaseModule = __decorate([
         providers: [
             { provide: property_repository_1.PROPERTY_REPOSITORY, useClass: property_typeorm_repository_1.PropertyTypeOrmRepository },
             { provide: bed_repository_1.BED_REPOSITORY, useClass: bed_typeorm_repository_1.BedTypeOrmRepository },
+            { provide: bedroom_repository_1.BEDROOM_REPOSITORY, useClass: bedroom_typeorm_repository_1.BedroomTypeOrmRepository },
             { provide: resident_repository_1.RESIDENT_REPOSITORY, useClass: resident_typeorm_repository_1.ResidentTypeOrmRepository },
             { provide: booking_repository_1.BOOKING_REPOSITORY, useClass: booking_typeorm_repository_1.BookingTypeOrmRepository },
             { provide: landlord_repository_1.LANDLORD_REPOSITORY, useClass: landlord_typeorm_repository_1.LandlordTypeOrmRepository },
@@ -112,13 +121,16 @@ exports.DatabaseModule = DatabaseModule = __decorate([
             { provide: deposit_transaction_repository_1.DEPOSIT_TRANSACTION_REPOSITORY, useClass: deposit_transaction_typeorm_repository_1.DepositTransactionTypeOrmRepository },
             { provide: company_repository_1.COMPANY_REPOSITORY, useClass: company_typeorm_repository_1.CompanyTypeOrmRepository },
             { provide: audit_log_repository_1.AUDIT_LOG_REPOSITORY, useClass: audit_log_typeorm_repository_1.AuditLogTypeOrmRepository },
+            { provide: property_space_repository_1.PROPERTY_SPACE_REPOSITORY, useClass: property_space_typeorm_repository_1.PropertySpaceTypeOrmRepository },
+            { provide: property_space_repository_1.SPACE_ITEM_REPOSITORY, useClass: property_space_typeorm_repository_1.SpaceItemTypeOrmRepository },
         ],
         exports: [
-            property_repository_1.PROPERTY_REPOSITORY, bed_repository_1.BED_REPOSITORY, resident_repository_1.RESIDENT_REPOSITORY, booking_repository_1.BOOKING_REPOSITORY,
+            property_repository_1.PROPERTY_REPOSITORY, bed_repository_1.BED_REPOSITORY, bedroom_repository_1.BEDROOM_REPOSITORY, resident_repository_1.RESIDENT_REPOSITORY, booking_repository_1.BOOKING_REPOSITORY,
             landlord_repository_1.LANDLORD_REPOSITORY, property_administrator_repository_1.PROPERTY_ADMINISTRATOR_REPOSITORY, service_provider_repository_1.SERVICE_PROVIDER_REPOSITORY,
             maintenance_ticket_repository_1.MAINTENANCE_TICKET_REPOSITORY, ticket_activity_log_repository_1.TICKET_ACTIVITY_LOG_REPOSITORY, key_log_repository_1.KEY_LOG_REPOSITORY,
             checkout_record_repository_1.CHECKOUT_RECORD_REPOSITORY, rent_payment_repository_1.RENT_PAYMENT_REPOSITORY, rent_payment_repository_1.RENT_PAYMENT_INSTALLMENT_REPOSITORY,
             landlord_payment_repository_1.LANDLORD_PAYMENT_REPOSITORY, deposit_transaction_repository_1.DEPOSIT_TRANSACTION_REPOSITORY, company_repository_1.COMPANY_REPOSITORY, audit_log_repository_1.AUDIT_LOG_REPOSITORY,
+            property_space_repository_1.PROPERTY_SPACE_REPOSITORY, property_space_repository_1.SPACE_ITEM_REPOSITORY,
         ],
     })
 ], DatabaseModule);

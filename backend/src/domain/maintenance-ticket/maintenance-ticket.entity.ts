@@ -20,6 +20,8 @@ export class MaintenanceTicket {
   clientPhone: string | null;
   approvedBy: string | null;
   approvalDate: Date | null;
+  paymentApprovedBy: string | null;
+  timeframe: string | null;
   chargedBy: string | null;
   houseCompany: string | null;
   maintenanceCost: number | null;

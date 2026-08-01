@@ -124,6 +124,19 @@ export class PropertyOrmEntity {
   @Column({ type: 'date', nullable: true })
   internetContractEndDate: Date;
 
+  @Column({ type: 'text', nullable: true })
+  internetOnlineLink: string;
+
+  @Column({ length: 50, nullable: true })
+  internetBusinessPhone: string;
+
+  @Column({ type: 'text', nullable: true })
+  internetNotes: string;
+
+  // Waste additions
+  @Column({ length: 50, nullable: true })
+  wastePhone: string;
+
   // Sales
   @Column({ type: 'text', nullable: true })
   salesDescription: string;
@@ -134,6 +147,12 @@ export class PropertyOrmEntity {
 
   @Column({ length: 50, nullable: true })
   propertyType: string;
+
+  @Column({ length: 50, nullable: true })
+  crn: string;
+
+  @Column({ length: 200, nullable: true })
+  propertyEmail: string;
 
   // Relations
   @Column({ type: 'uuid', nullable: true })

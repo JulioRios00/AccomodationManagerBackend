@@ -22,6 +22,11 @@ export class BedroomTypeOrmRepository implements IBedroomRepository {
     return e ? this.toDomain(e) : null;
   }
 
+  async findByPropertyAndName(propertyId: string, name: string): Promise<Bedroom | null> {
+    const e = await this.repo.findOne({ where: { propertyId, name, active: true } });
+    return e ? this.toDomain(e) : null;
+  }
+
   async save(bedroom: Partial<Bedroom>): Promise<Bedroom> {
     const e = this.repo.create(bedroom as DeepPartial<BedroomOrmEntity>);
     return this.toDomain(await this.repo.save(e));

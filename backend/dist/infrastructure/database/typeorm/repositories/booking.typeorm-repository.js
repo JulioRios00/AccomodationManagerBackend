@@ -44,6 +44,18 @@ let BookingTypeOrmRepository = class BookingTypeOrmRepository {
         });
         return entities.map(this.toDomain);
     }
+    async findOverlappingActive(bedId, startDate, endDate, excludeId) {
+        const qb = this.repo.createQueryBuilder('b')
+            .where('b.bedId = :bedId', { bedId })
+            .andWhere('b.active = true')
+            .andWhere("b.status IN ('active', 'upcoming')")
+            .andWhere('b.checkInDate < :endDate', { endDate })
+            .andWhere('(COALESCE(b.checkOutDate, b.contractEndDate) > :startDate OR (b.checkOutDate IS NULL AND b.contractEndDate IS NULL))', { startDate });
+        if (excludeId) {
+            qb.andWhere('b.id != :excludeId', { excludeId });
+        }
+        return (await qb.getMany()).map(this.toDomain);
+    }
     async save(booking) {
         const entity = this.repo.create(booking);
         const saved = await this.repo.save(entity);

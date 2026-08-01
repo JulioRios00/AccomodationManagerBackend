@@ -36,7 +36,15 @@ export declare class PropertyOrmEntity {
     internetPaymentType: string;
     internetStatus: string;
     internetContractEndDate: Date;
+    internetOnlineLink: string;
+    internetBusinessPhone: string;
+    internetNotes: string;
+    wastePhone: string;
     salesDescription: string;
+    eirCode: string;
+    propertyType: string;
+    crn: string;
+    propertyEmail: string;
     landlordId: string;
     active: boolean;
     createdAt: Date;

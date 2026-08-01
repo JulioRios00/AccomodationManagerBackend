@@ -8,6 +8,7 @@ export declare class BookingTypeOrmRepository implements IBookingRepository {
     findAll(status?: BookingStatus): Promise<Booking[]>;
     findById(id: string): Promise<Booking | null>;
     findByBedId(bedId: string): Promise<Booking[]>;
+    findOverlappingActive(bedId: string, startDate: Date, endDate: Date, excludeId?: string): Promise<Booking[]>;
     save(booking: Partial<Booking>): Promise<Booking>;
     deleteByBedId(bedId: string): Promise<void>;
     delete(id: string): Promise<void>;

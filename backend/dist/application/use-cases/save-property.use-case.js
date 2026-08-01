@@ -24,9 +24,25 @@ let SavePropertyUseCase = class SavePropertyUseCase {
             const existing = await this.repo.findById(dto.id);
             if (!existing)
                 throw new common_1.NotFoundException(`Property ${dto.id} not found`);
-            return this.repo.save(dto);
         }
+        await this.validateUniqueness(dto);
+        if (dto.id)
+            return this.repo.save(dto);
         return this.repo.save({ ...dto, active: true });
+    }
+    async validateUniqueness(dto) {
+        if (dto.electricityMprn) {
+            const conflict = await this.repo.findByMprn(dto.electricityMprn);
+            if (conflict && conflict.id !== dto.id) {
+                throw new common_1.BadRequestException(`MPRN ${dto.electricityMprn} is already in use by property ${conflict.code}`);
+            }
+        }
+        if (dto.gasGprn) {
+            const conflict = await this.repo.findByGprn(dto.gasGprn);
+            if (conflict && conflict.id !== dto.id) {
+                throw new common_1.BadRequestException(`GPRN ${dto.gasGprn} is already in use by property ${conflict.code}`);
+            }
+        }
     }
 };
 exports.SavePropertyUseCase = SavePropertyUseCase;

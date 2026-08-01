@@ -13,6 +13,7 @@ exports.BedOrmEntity = void 0;
 const typeorm_1 = require("typeorm");
 const property_orm_entity_1 = require("./property.orm-entity");
 const booking_orm_entity_1 = require("./booking.orm-entity");
+const bedroom_orm_entity_1 = require("./bedroom.orm-entity");
 let BedOrmEntity = class BedOrmEntity {
 };
 exports.BedOrmEntity = BedOrmEntity;
@@ -24,6 +25,22 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], BedOrmEntity.prototype, "propertyId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'uuid', nullable: true }),
+    __metadata("design:type", String)
+], BedOrmEntity.prototype, "bedroomId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    __metadata("design:type", String)
+], BedOrmEntity.prototype, "name", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'int', nullable: true }),
+    __metadata("design:type", Number)
+], BedOrmEntity.prototype, "position", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 20, default: 'vacant' }),
+    __metadata("design:type", String)
+], BedOrmEntity.prototype, "status", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
@@ -64,6 +81,10 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => property_orm_entity_1.PropertyOrmEntity, (property) => property.beds),
     __metadata("design:type", property_orm_entity_1.PropertyOrmEntity)
 ], BedOrmEntity.prototype, "property", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => bedroom_orm_entity_1.BedroomOrmEntity, (bedroom) => bedroom.beds, { nullable: true }),
+    __metadata("design:type", bedroom_orm_entity_1.BedroomOrmEntity)
+], BedOrmEntity.prototype, "bedroom", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => booking_orm_entity_1.BookingOrmEntity, (booking) => booking.bed),
     __metadata("design:type", Array)

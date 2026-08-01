@@ -34,7 +34,13 @@ const landlord_payments_controller_1 = require("./presentation/controllers/landl
 const deposit_transactions_controller_1 = require("./presentation/controllers/deposit-transactions.controller");
 const reports_controller_1 = require("./presentation/controllers/reports.controller");
 const companies_controller_1 = require("./presentation/controllers/companies.controller");
+const bedrooms_controller_1 = require("./presentation/controllers/bedrooms.controller");
 const import_xlsx_use_case_1 = require("./application/use-cases/import-xlsx.use-case");
+const import_bills_use_case_1 = require("./application/use-cases/import-bills.use-case");
+const import_maintenance_use_case_1 = require("./application/use-cases/import-maintenance.use-case");
+const import_deposits_use_case_1 = require("./application/use-cases/import-deposits.use-case");
+const import_landlord_payments_use_case_1 = require("./application/use-cases/import-landlord-payments.use-case");
+const import_resident_payments_use_case_1 = require("./application/use-cases/import-resident-payments.use-case");
 const get_dashboard_stats_use_case_1 = require("./application/use-cases/get-dashboard-stats.use-case");
 const get_properties_use_case_1 = require("./application/use-cases/get-properties.use-case");
 const get_beds_use_case_1 = require("./application/use-cases/get-beds.use-case");
@@ -79,6 +85,17 @@ const get_delinquency_report_use_case_1 = require("./application/use-cases/get-d
 const get_companies_use_case_1 = require("./application/use-cases/get-companies.use-case");
 const save_company_use_case_1 = require("./application/use-cases/save-company.use-case");
 const delete_company_use_case_1 = require("./application/use-cases/delete-company.use-case");
+const get_bedrooms_use_case_1 = require("./application/use-cases/get-bedrooms.use-case");
+const save_bedroom_use_case_1 = require("./application/use-cases/save-bedroom.use-case");
+const delete_bedroom_use_case_1 = require("./application/use-cases/delete-bedroom.use-case");
+const claim_ticket_use_case_1 = require("./application/use-cases/claim-ticket.use-case");
+const close_ticket_use_case_1 = require("./application/use-cases/close-ticket.use-case");
+const get_property_spaces_use_case_1 = require("./application/use-cases/get-property-spaces.use-case");
+const save_property_space_use_case_1 = require("./application/use-cases/save-property-space.use-case");
+const delete_property_space_use_case_1 = require("./application/use-cases/delete-property-space.use-case");
+const save_space_item_use_case_1 = require("./application/use-cases/save-space-item.use-case");
+const delete_space_item_use_case_1 = require("./application/use-cases/delete-space-item.use-case");
+const property_spaces_controller_1 = require("./presentation/controllers/property-spaces.controller");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(metrics_middleware_1.MetricsMiddleware).forRoutes('*');
@@ -107,20 +124,22 @@ exports.AppModule = AppModule = __decorate([
             residents_controller_1.ResidentsController, bookings_controller_1.BookingsController, health_controller_1.HealthController,
             landlords_controller_1.LandlordsController, service_providers_controller_1.ServiceProvidersController, maintenance_tickets_controller_1.MaintenanceTicketsController,
             key_logs_controller_1.KeyLogsController, checkout_controller_1.CheckoutController, rent_payments_controller_1.RentPaymentsController, landlord_payments_controller_1.LandlordPaymentsController,
-            deposit_transactions_controller_1.DepositTransactionsController, reports_controller_1.ReportsController, companies_controller_1.CompaniesController,
+            deposit_transactions_controller_1.DepositTransactionsController, reports_controller_1.ReportsController, companies_controller_1.CompaniesController, bedrooms_controller_1.BedroomsController,
+            property_spaces_controller_1.PropertySpacesController,
         ],
         providers: [
             { provide: core_1.APP_FILTER, useClass: setup_1.SentryGlobalFilter },
             { provide: core_1.APP_GUARD, useClass: clerk_auth_guard_1.ClerkAuthGuard },
             { provide: core_1.APP_GUARD, useClass: roles_guard_1.RolesGuard },
-            import_xlsx_use_case_1.ImportXlsxUseCase, get_dashboard_stats_use_case_1.GetDashboardStatsUseCase,
+            import_xlsx_use_case_1.ImportXlsxUseCase, import_bills_use_case_1.ImportBillsUseCase, import_maintenance_use_case_1.ImportMaintenanceUseCase, import_deposits_use_case_1.ImportDepositsUseCase, import_landlord_payments_use_case_1.ImportLandlordPaymentsUseCase, import_resident_payments_use_case_1.ImportResidentPaymentsUseCase,
+            get_dashboard_stats_use_case_1.GetDashboardStatsUseCase,
             get_properties_use_case_1.GetPropertiesUseCase, get_beds_use_case_1.GetBedsUseCase, get_residents_use_case_1.GetResidentsUseCase, get_bookings_use_case_1.GetBookingsUseCase,
             save_property_use_case_1.SavePropertyUseCase, delete_property_use_case_1.DeletePropertyUseCase, save_bed_use_case_1.SaveBedUseCase, delete_bed_use_case_1.DeleteBedUseCase,
             save_resident_use_case_1.SaveResidentUseCase, delete_resident_use_case_1.DeleteResidentUseCase, save_booking_use_case_1.SaveBookingUseCase, delete_booking_use_case_1.DeleteBookingUseCase,
             get_landlords_use_case_1.GetLandlordsUseCase, save_landlord_use_case_1.SaveLandlordUseCase, delete_landlord_use_case_1.DeleteLandlordUseCase,
             get_property_administrators_use_case_1.GetPropertyAdministratorsUseCase, save_property_administrator_use_case_1.SavePropertyAdministratorUseCase, delete_property_administrator_use_case_1.DeletePropertyAdministratorUseCase,
             get_service_providers_use_case_1.GetServiceProvidersUseCase, save_service_provider_use_case_1.SaveServiceProviderUseCase, delete_service_provider_use_case_1.DeleteServiceProviderUseCase,
-            get_maintenance_tickets_use_case_1.GetMaintenanceTicketsUseCase, save_maintenance_ticket_use_case_1.SaveMaintenanceTicketUseCase, delete_maintenance_ticket_use_case_1.DeleteMaintenanceTicketUseCase, add_ticket_activity_use_case_1.AddTicketActivityUseCase,
+            get_maintenance_tickets_use_case_1.GetMaintenanceTicketsUseCase, save_maintenance_ticket_use_case_1.SaveMaintenanceTicketUseCase, delete_maintenance_ticket_use_case_1.DeleteMaintenanceTicketUseCase, add_ticket_activity_use_case_1.AddTicketActivityUseCase, claim_ticket_use_case_1.ClaimTicketUseCase, close_ticket_use_case_1.CloseTicketUseCase,
             get_key_logs_use_case_1.GetKeyLogsUseCase, save_key_log_use_case_1.SaveKeyLogUseCase, delete_key_log_use_case_1.DeleteKeyLogUseCase,
             checkout_use_case_1.CheckoutUseCase,
             get_rent_payments_use_case_1.GetRentPaymentsUseCase, save_rent_payment_use_case_1.SaveRentPaymentUseCase, delete_rent_payment_use_case_1.DeleteRentPaymentUseCase, add_rent_installment_use_case_1.AddRentInstallmentUseCase,
@@ -128,6 +147,9 @@ exports.AppModule = AppModule = __decorate([
             get_deposit_transactions_use_case_1.GetDepositTransactionsUseCase, save_deposit_transaction_use_case_1.SaveDepositTransactionUseCase, delete_deposit_transaction_use_case_1.DeleteDepositTransactionUseCase,
             get_delinquency_report_use_case_1.GetDelinquencyReportUseCase,
             get_companies_use_case_1.GetCompaniesUseCase, save_company_use_case_1.SaveCompanyUseCase, delete_company_use_case_1.DeleteCompanyUseCase,
+            get_bedrooms_use_case_1.GetBedroomsUseCase, save_bedroom_use_case_1.SaveBedroomUseCase, delete_bedroom_use_case_1.DeleteBedroomUseCase,
+            get_property_spaces_use_case_1.GetPropertySpacesUseCase, save_property_space_use_case_1.SavePropertySpaceUseCase, delete_property_space_use_case_1.DeletePropertySpaceUseCase,
+            save_space_item_use_case_1.SaveSpaceItemUseCase, delete_space_item_use_case_1.DeleteSpaceItemUseCase,
         ],
     })
 ], AppModule);

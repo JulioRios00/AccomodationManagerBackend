@@ -1,9 +1,14 @@
 import { Bed } from '../../domain/bed/bed.entity';
 import { IBedRepository } from '../../domain/bed/bed.repository';
+import { IBedroomRepository } from '../../domain/bedroom/bedroom.repository';
 export interface SaveBedDto {
     id?: string;
     propertyId: string;
     bedNumber: number;
+    bedroomId?: string | null;
+    name?: string | null;
+    position?: number | null;
+    status?: string;
     bedroomType: string;
     sex: string;
     bedSize: string;
@@ -12,6 +17,7 @@ export interface SaveBedDto {
 }
 export declare class SaveBedUseCase {
     private readonly repo;
-    constructor(repo: IBedRepository);
+    private readonly bedroomRepo;
+    constructor(repo: IBedRepository, bedroomRepo: IBedroomRepository);
     execute(dto: SaveBedDto): Promise<Bed>;
 }

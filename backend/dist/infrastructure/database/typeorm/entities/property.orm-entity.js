@@ -162,7 +162,39 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ type: 'text', nullable: true }),
     __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "internetOnlineLink", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 50, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "internetBusinessPhone", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "internetNotes", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 50, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "wastePhone", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", String)
 ], PropertyOrmEntity.prototype, "salesDescription", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 10, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "eirCode", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 50, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "propertyType", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 50, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "crn", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 200, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "propertyEmail", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'uuid', nullable: true }),
     __metadata("design:type", String)

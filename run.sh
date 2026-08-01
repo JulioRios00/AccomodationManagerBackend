@@ -181,7 +181,7 @@ BACKEND_PID=$!
 log "Waiting for backend to be ready..."
 BACKEND_READY=false
 for i in {1..30}; do
-  if curl -sf "http://localhost:${PORT}/api/dashboard/stats" &>/dev/null; then
+  if curl -sf "http://localhost:${PORT}/api/health/live" &>/dev/null; then
     ok "Backend is ready"
     BACKEND_READY=true
     break
@@ -206,9 +206,23 @@ log "Starting Next.js frontend on http://localhost:3000 ..."
 ) &
 FRONTEND_PID=$!
 
+# Wait for frontend to be ready (up to 60 s — Next.js cold compile takes longer)
+log "Waiting for frontend to be ready..."
+FRONTEND_READY=false
+for i in {1..60}; do
+  if curl -sf "http://localhost:3000" &>/dev/null; then
+    ok "Frontend is ready"
+    FRONTEND_READY=true
+    break
+  fi
+  sleep 1
+done
+
+if [[ "$FRONTEND_READY" == false ]]; then
+  warn "Frontend did not respond in time — it may still be compiling. Check the [frontend] output."
+fi
+
 # ─────────────────────────────────────────────────────────────────────────────
-# Wait a moment then print the welcome banner
-sleep 3
 echo ""
 echo -e "${BOLD}${GREEN}✔ Accommodation Manager is running${NC}"
 echo -e "  ${CYAN}Frontend  →${NC}  http://localhost:3000/dashboard"

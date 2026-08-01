@@ -44,6 +44,12 @@ export class Property {
   internetPaymentType: string | null;
   internetStatus: string | null;
   internetContractEndDate: Date | null;
+  internetOnlineLink: string | null;
+  internetBusinessPhone: string | null;
+  internetNotes: string | null;
+
+  // Waste additions
+  wastePhone: string | null;
 
   // Sales
   salesDescription: string | null;
@@ -51,6 +57,8 @@ export class Property {
   // Identification
   eirCode: string | null;
   propertyType: string | null;
+  crn: string | null;
+  propertyEmail: string | null;
 
   // Relations
   landlordId: string | null;

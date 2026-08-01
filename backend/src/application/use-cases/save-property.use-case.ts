@@ -38,9 +38,15 @@ export interface SavePropertyDto {
   internetPaymentType?: string | null;
   internetStatus?: string | null;
   internetContractEndDate?: string | null;
+  internetOnlineLink?: string | null;
+  internetBusinessPhone?: string | null;
+  internetNotes?: string | null;
+  wastePhone?: string | null;
   salesDescription?: string | null;
   eirCode?: string | null;
   propertyType?: string | null;
+  crn?: string | null;
+  propertyEmail?: string | null;
   landlordId?: string | null;
 }
 

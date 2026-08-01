@@ -24,10 +24,11 @@ let GetDashboardStatsUseCase = class GetDashboardStatsUseCase {
         this.bookingRepo = bookingRepo;
     }
     async execute() {
-        const [properties, beds, activeBookings] = await Promise.all([
+        const [properties, beds, activeBookings, upcomingBookings] = await Promise.all([
             this.propertyRepo.findAll(),
             this.bedRepo.findAll(),
             this.bookingRepo.findAll('active'),
+            this.bookingRepo.findAll('upcoming'),
         ]);
         const occupiedBedIds = new Set(activeBookings.map((b) => b.bedId));
         const occupiedBeds = occupiedBedIds.size;
@@ -39,12 +40,22 @@ let GetDashboardStatsUseCase = class GetDashboardStatsUseCase {
             const endDate = b.checkOutDate || b.contractEndDate;
             return endDate && endDate <= thirtyEightDaysFromNow;
         }).length;
+        const totalBeds = beds.length;
+        const occupancyRate = totalBeds > 0
+            ? Math.round((occupiedBeds / totalBeds) * 1000) / 10
+            : 0;
+        const monthlyRevenue = activeBookings.reduce((sum, b) => sum + (b.rentAmount ?? 0), 0);
+        const upcomingRevenue = upcomingBookings.reduce((sum, b) => sum + (b.rentAmount ?? 0), 0);
+        const projectedRevenue = monthlyRevenue + upcomingRevenue;
         return {
             totalProperties: properties.length,
-            totalBeds: beds.length,
+            totalBeds,
             occupiedBeds,
             availableBeds,
             onRadarBeds,
+            occupancyRate,
+            monthlyRevenue,
+            projectedRevenue,
         };
     }
 };

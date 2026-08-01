@@ -59,11 +59,17 @@ export class SaveBookingUseCase {
       if (!existing) throw new NotFoundException(`Booking ${dto.id} not found`);
     }
 
-    return this.repo.save({
+    const booking = await this.repo.save({
       ...dto,
       checkInDate: dto.checkInDate ? new Date(dto.checkInDate) : null,
       contractEndDate: dto.contractEndDate ? new Date(dto.contractEndDate) : null,
       checkOutDate: dto.checkOutDate ? new Date(dto.checkOutDate) : null,
     });
+
+    if (booking.status === 'active') {
+      await this.bedRepo.save({ id: dto.bedId, status: 'allocated' });
+    }
+
+    return booking;
   }
 }

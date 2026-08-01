@@ -15,28 +15,59 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SaveBookingUseCase = void 0;
 const common_1 = require("@nestjs/common");
 const booking_repository_1 = require("../../domain/booking/booking.repository");
+const bed_repository_1 = require("../../domain/bed/bed.repository");
+const resident_repository_1 = require("../../domain/resident/resident.repository");
 let SaveBookingUseCase = class SaveBookingUseCase {
-    constructor(repo) {
+    constructor(repo, bedRepo, residentRepo) {
         this.repo = repo;
+        this.bedRepo = bedRepo;
+        this.residentRepo = residentRepo;
     }
     async execute(dto) {
+        const bed = await this.bedRepo.findById(dto.bedId);
+        if (!bed)
+            throw new common_1.NotFoundException(`Bed ${dto.bedId} not found`);
+        const resident = await this.residentRepo.findById(dto.residentId);
+        if (!resident)
+            throw new common_1.NotFoundException(`Resident ${dto.residentId} not found`);
+        const startDate = dto.checkInDate ? new Date(dto.checkInDate) : null;
+        const endDate = dto.contractEndDate
+            ? new Date(dto.contractEndDate)
+            : dto.checkOutDate
+                ? new Date(dto.checkOutDate)
+                : null;
+        if (startDate && endDate && startDate >= endDate) {
+            throw new common_1.BadRequestException('Licence start date must be before end date');
+        }
+        if (startDate && endDate) {
+            const overlapping = await this.repo.findOverlappingActive(dto.bedId, startDate, endDate, dto.id);
+            if (overlapping.length > 0) {
+                throw new common_1.BadRequestException(`Bed is already allocated during the selected period (conflicts with booking ${overlapping[0].id})`);
+            }
+        }
         if (dto.id) {
             const existing = await this.repo.findById(dto.id);
             if (!existing)
                 throw new common_1.NotFoundException(`Booking ${dto.id} not found`);
         }
-        return this.repo.save({
+        const booking = await this.repo.save({
             ...dto,
             checkInDate: dto.checkInDate ? new Date(dto.checkInDate) : null,
             contractEndDate: dto.contractEndDate ? new Date(dto.contractEndDate) : null,
             checkOutDate: dto.checkOutDate ? new Date(dto.checkOutDate) : null,
         });
+        if (booking.status === 'active') {
+            await this.bedRepo.save({ id: dto.bedId, status: 'allocated' });
+        }
+        return booking;
     }
 };
 exports.SaveBookingUseCase = SaveBookingUseCase;
 exports.SaveBookingUseCase = SaveBookingUseCase = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)(booking_repository_1.BOOKING_REPOSITORY)),
-    __metadata("design:paramtypes", [Object])
+    __param(1, (0, common_1.Inject)(bed_repository_1.BED_REPOSITORY)),
+    __param(2, (0, common_1.Inject)(resident_repository_1.RESIDENT_REPOSITORY)),
+    __metadata("design:paramtypes", [Object, Object, Object])
 ], SaveBookingUseCase);
 //# sourceMappingURL=save-booking.use-case.js.map

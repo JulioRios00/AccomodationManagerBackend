@@ -15,21 +15,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeleteBookingUseCase = void 0;
 const common_1 = require("@nestjs/common");
 const booking_repository_1 = require("../../domain/booking/booking.repository");
+const bed_repository_1 = require("../../domain/bed/bed.repository");
 let DeleteBookingUseCase = class DeleteBookingUseCase {
-    constructor(repo) {
+    constructor(repo, bedRepo) {
         this.repo = repo;
+        this.bedRepo = bedRepo;
     }
     async execute(id) {
         const existing = await this.repo.findById(id);
         if (!existing)
             throw new common_1.NotFoundException(`Booking ${id} not found`);
         await this.repo.delete(id);
+        const remaining = await this.repo.findByBedId(existing.bedId);
+        const hasActive = remaining.some((b) => b.id !== id && b.status === 'active');
+        if (!hasActive) {
+            await this.bedRepo.save({ id: existing.bedId, status: 'vacant' });
+        }
     }
 };
 exports.DeleteBookingUseCase = DeleteBookingUseCase;
 exports.DeleteBookingUseCase = DeleteBookingUseCase = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)(booking_repository_1.BOOKING_REPOSITORY)),
-    __metadata("design:paramtypes", [Object])
+    __param(1, (0, common_1.Inject)(bed_repository_1.BED_REPOSITORY)),
+    __metadata("design:paramtypes", [Object, Object])
 ], DeleteBookingUseCase);
 //# sourceMappingURL=delete-booking.use-case.js.map

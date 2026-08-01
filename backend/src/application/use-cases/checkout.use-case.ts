@@ -16,6 +16,7 @@ import {
   IDepositTransactionRepository,
   DEPOSIT_TRANSACTION_REPOSITORY,
 } from '../../domain/deposit-transaction/deposit-transaction.repository';
+import { IBedRepository, BED_REPOSITORY } from '../../domain/bed/bed.repository';
 
 export interface CheckoutDto {
   bookingId: string;
@@ -48,6 +49,8 @@ export class CheckoutUseCase {
     private readonly checkoutRepo: ICheckoutRecordRepository,
     @Inject(DEPOSIT_TRANSACTION_REPOSITORY)
     private readonly depositRepo: IDepositTransactionRepository,
+    @Inject(BED_REPOSITORY)
+    private readonly bedRepo: IBedRepository,
   ) {}
 
   async execute(dto: CheckoutDto) {
@@ -62,6 +65,8 @@ export class CheckoutUseCase {
       status: 'completed',
       checkOutDate: new Date(dto.checkoutDate),
     });
+
+    await this.bedRepo.save({ id: booking.bedId, status: 'vacant' });
 
     const record = await this.checkoutRepo.save({
       bookingId: dto.bookingId,

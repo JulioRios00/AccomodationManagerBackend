@@ -29,6 +29,11 @@ import { CompaniesController } from './presentation/controllers/companies.contro
 import { BedroomsController } from './presentation/controllers/bedrooms.controller';
 
 import { ImportXlsxUseCase } from './application/use-cases/import-xlsx.use-case';
+import { ImportBillsUseCase } from './application/use-cases/import-bills.use-case';
+import { ImportMaintenanceUseCase } from './application/use-cases/import-maintenance.use-case';
+import { ImportDepositsUseCase } from './application/use-cases/import-deposits.use-case';
+import { ImportLandlordPaymentsUseCase } from './application/use-cases/import-landlord-payments.use-case';
+import { ImportResidentPaymentsUseCase } from './application/use-cases/import-resident-payments.use-case';
 import { GetDashboardStatsUseCase } from './application/use-cases/get-dashboard-stats.use-case';
 import { GetPropertiesUseCase } from './application/use-cases/get-properties.use-case';
 import { GetBedsUseCase } from './application/use-cases/get-beds.use-case';
@@ -78,6 +83,12 @@ import { SaveBedroomUseCase } from './application/use-cases/save-bedroom.use-cas
 import { DeleteBedroomUseCase } from './application/use-cases/delete-bedroom.use-case';
 import { ClaimTicketUseCase } from './application/use-cases/claim-ticket.use-case';
 import { CloseTicketUseCase } from './application/use-cases/close-ticket.use-case';
+import { GetPropertySpacesUseCase } from './application/use-cases/get-property-spaces.use-case';
+import { SavePropertySpaceUseCase } from './application/use-cases/save-property-space.use-case';
+import { DeletePropertySpaceUseCase } from './application/use-cases/delete-property-space.use-case';
+import { SaveSpaceItemUseCase } from './application/use-cases/save-space-item.use-case';
+import { DeleteSpaceItemUseCase } from './application/use-cases/delete-space-item.use-case';
+import { PropertySpacesController } from './presentation/controllers/property-spaces.controller';
 
 @Module({
   imports: [
@@ -101,12 +112,14 @@ import { CloseTicketUseCase } from './application/use-cases/close-ticket.use-cas
     LandlordsController, ServiceProvidersController, MaintenanceTicketsController,
     KeyLogsController, CheckoutController, RentPaymentsController, LandlordPaymentsController,
     DepositTransactionsController, ReportsController, CompaniesController, BedroomsController,
+    PropertySpacesController,
   ],
   providers: [
     { provide: APP_FILTER, useClass: SentryGlobalFilter },
     { provide: APP_GUARD, useClass: ClerkAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
-    ImportXlsxUseCase, GetDashboardStatsUseCase,
+    ImportXlsxUseCase, ImportBillsUseCase, ImportMaintenanceUseCase, ImportDepositsUseCase, ImportLandlordPaymentsUseCase, ImportResidentPaymentsUseCase,
+    GetDashboardStatsUseCase,
     GetPropertiesUseCase, GetBedsUseCase, GetResidentsUseCase, GetBookingsUseCase,
     SavePropertyUseCase, DeletePropertyUseCase, SaveBedUseCase, DeleteBedUseCase,
     SaveResidentUseCase, DeleteResidentUseCase, SaveBookingUseCase, DeleteBookingUseCase,
@@ -122,6 +135,8 @@ import { CloseTicketUseCase } from './application/use-cases/close-ticket.use-cas
     GetDelinquencyReportUseCase,
     GetCompaniesUseCase, SaveCompanyUseCase, DeleteCompanyUseCase,
     GetBedroomsUseCase, SaveBedroomUseCase, DeleteBedroomUseCase,
+    GetPropertySpacesUseCase, SavePropertySpaceUseCase, DeletePropertySpaceUseCase,
+    SaveSpaceItemUseCase, DeleteSpaceItemUseCase,
   ],
 })
 export class AppModule implements NestModule {

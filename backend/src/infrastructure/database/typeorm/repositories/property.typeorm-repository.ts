@@ -95,9 +95,15 @@ export class PropertyTypeOrmRepository implements IPropertyRepository {
     p.internetPaymentType = entity.internetPaymentType ?? null;
     p.internetStatus = entity.internetStatus ?? null;
     p.internetContractEndDate = entity.internetContractEndDate ?? null;
+    p.internetOnlineLink = entity.internetOnlineLink ?? null;
+    p.internetBusinessPhone = entity.internetBusinessPhone ?? null;
+    p.internetNotes = entity.internetNotes ?? null;
+    p.wastePhone = entity.wastePhone ?? null;
     p.salesDescription = entity.salesDescription ?? null;
     p.eirCode = entity.eirCode ?? null;
     p.propertyType = entity.propertyType ?? null;
+    p.crn = entity.crn ?? null;
+    p.propertyEmail = entity.propertyEmail ?? null;
     p.landlordId = entity.landlordId ?? null;
     p.active = entity.active;
     p.createdAt = entity.createdAt;
