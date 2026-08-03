@@ -37,6 +37,14 @@ export class BookingTypeOrmRepository implements IBookingRepository {
     return entities.map(this.toDomain);
   }
 
+  async findActiveByResidentId(residentId: string): Promise<Booking | null> {
+    const entity = await this.repo.findOne({
+      where: { residentId, status: 'active', active: true },
+      relations: ['bed', 'bed.property'],
+    });
+    return entity ? this.toDomain(entity) : null;
+  }
+
   async findOverlappingActive(bedId: string, startDate: Date, endDate: Date, excludeId?: string): Promise<Booking[]> {
     const qb = this.repo.createQueryBuilder('b')
       .where('b.bedId = :bedId', { bedId })
