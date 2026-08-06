@@ -29,6 +29,7 @@ import { DepositTransactionsController } from './presentation/controllers/deposi
 import { ReportsController } from './presentation/controllers/reports.controller';
 import { CompaniesController } from './presentation/controllers/companies.controller';
 import { BedroomsController } from './presentation/controllers/bedrooms.controller';
+import { UsersController } from './presentation/controllers/users.controller';
 
 import { ImportXlsxUseCase } from './application/use-cases/import-xlsx.use-case';
 import { ImportBillsUseCase } from './application/use-cases/import-bills.use-case';
@@ -115,7 +116,7 @@ import { PropertySpacesController } from './presentation/controllers/property-sp
     LandlordsController, ServiceProvidersController, MaintenanceTicketsController, PortalController,
     KeyLogsController, CheckoutController, RentPaymentsController, LandlordPaymentsController,
     DepositTransactionsController, ReportsController, CompaniesController, BedroomsController,
-    PropertySpacesController,
+    PropertySpacesController, UsersController,
   ],
   providers: [
     { provide: APP_FILTER, useClass: SentryGlobalFilter },
