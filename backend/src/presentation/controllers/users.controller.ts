@@ -12,7 +12,7 @@ export class UsersController {
     const { data } = await this.clerk.users.getUserList({ limit: 200, orderBy: '-created_at' });
     return data.map(u => ({
       id: u.id,
-      fullName: [u.firstName, u.lastName].filter(Boolean).join(' ') || u.emailAddresses[0]?.emailAddress ?? '—',
+      fullName: [u.firstName, u.lastName].filter(Boolean).join(' ') || (u.emailAddresses[0]?.emailAddress ?? '—'),
       email: u.emailAddresses[0]?.emailAddress ?? '',
       role: (u.publicMetadata?.role as string) ?? 'staff',
       imageUrl: u.imageUrl,
