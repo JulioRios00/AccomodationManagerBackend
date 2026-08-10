@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TerminusModule } from '@nestjs/terminus';
 import { LoggerModule } from 'nestjs-pino';
 import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
+import { QueryFailedFilter } from './presentation/filters/query-failed.filter';
 import { DatabaseModule } from './infrastructure/database/database.module';
 
 import { ImportController } from './presentation/controllers/import.controller';
@@ -30,6 +31,7 @@ import { ReportsController } from './presentation/controllers/reports.controller
 import { CompaniesController } from './presentation/controllers/companies.controller';
 import { BedroomsController } from './presentation/controllers/bedrooms.controller';
 import { UsersController } from './presentation/controllers/users.controller';
+import { RolePermissionsController } from './presentation/controllers/role-permissions.controller';
 
 import { ImportXlsxUseCase } from './application/use-cases/import-xlsx.use-case';
 import { ImportBillsUseCase } from './application/use-cases/import-bills.use-case';
@@ -93,6 +95,8 @@ import { DeletePropertySpaceUseCase } from './application/use-cases/delete-prope
 import { SaveSpaceItemUseCase } from './application/use-cases/save-space-item.use-case';
 import { DeleteSpaceItemUseCase } from './application/use-cases/delete-space-item.use-case';
 import { PropertySpacesController } from './presentation/controllers/property-spaces.controller';
+import { GetRolePermissionsUseCase } from './application/use-cases/get-role-permissions.use-case';
+import { SaveRolePermissionsUseCase } from './application/use-cases/save-role-permissions.use-case';
 
 @Module({
   imports: [
@@ -116,10 +120,11 @@ import { PropertySpacesController } from './presentation/controllers/property-sp
     LandlordsController, ServiceProvidersController, MaintenanceTicketsController, PortalController,
     KeyLogsController, CheckoutController, RentPaymentsController, LandlordPaymentsController,
     DepositTransactionsController, ReportsController, CompaniesController, BedroomsController,
-    PropertySpacesController, UsersController,
+    PropertySpacesController, UsersController, RolePermissionsController,
   ],
   providers: [
     { provide: APP_FILTER, useClass: SentryGlobalFilter },
+    { provide: APP_FILTER, useClass: QueryFailedFilter },
     { provide: APP_GUARD, useClass: ClerkAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
     ImportXlsxUseCase, ImportBillsUseCase, ImportMaintenanceUseCase, ImportDepositsUseCase, ImportLandlordPaymentsUseCase, ImportResidentPaymentsUseCase, ImportResidentsToClerkUseCase,
@@ -141,6 +146,7 @@ import { PropertySpacesController } from './presentation/controllers/property-sp
     GetBedroomsUseCase, SaveBedroomUseCase, DeleteBedroomUseCase,
     GetPropertySpacesUseCase, SavePropertySpaceUseCase, DeletePropertySpaceUseCase,
     SaveSpaceItemUseCase, DeleteSpaceItemUseCase,
+    GetRolePermissionsUseCase, SaveRolePermissionsUseCase,
   ],
 })
 export class AppModule implements NestModule {

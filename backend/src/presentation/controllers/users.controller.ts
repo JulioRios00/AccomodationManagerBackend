@@ -22,7 +22,7 @@ export class UsersController {
 
   @Patch(':id')
   async updateUserRole(@Param('id') id: string, @Body() body: { role: string }) {
-    const allowed = ['sysadmin', 'manager', 'administrator', 'staff', 'resident'];
+    const allowed = ['sysadmin', 'manager', 'administrator', 'staff', 'resident', 'maintenance'];
     if (!allowed.includes(body.role)) {
       throw new Error(`Invalid role: ${body.role}`);
     }
