@@ -1,5 +1,6 @@
 import { Property } from '../../domain/property/property.entity';
 import { IPropertyRepository } from '../../domain/property/property.repository';
+import { ILandlordRepository } from '../../domain/landlord/landlord.repository';
 export interface SavePropertyDto {
     id?: string;
     code: string;
@@ -45,11 +46,18 @@ export interface SavePropertyDto {
     propertyType?: string | null;
     crn?: string | null;
     propertyEmail?: string | null;
+    paymentReference?: string | null;
+    propertySupplier?: string | null;
+    officeKeysComment?: string | null;
     landlordId?: string | null;
 }
 export declare class SavePropertyUseCase {
     private readonly repo;
-    constructor(repo: IPropertyRepository);
+    private readonly landlordRepo;
+    constructor(repo: IPropertyRepository, landlordRepo: ILandlordRepository);
     execute(dto: SavePropertyDto): Promise<Property>;
+    private normalize;
+    private validateFields;
+    private validateLandlord;
     private validateUniqueness;
 }

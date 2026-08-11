@@ -21,19 +21,21 @@ const import_maintenance_use_case_1 = require("../../application/use-cases/impor
 const import_deposits_use_case_1 = require("../../application/use-cases/import-deposits.use-case");
 const import_landlord_payments_use_case_1 = require("../../application/use-cases/import-landlord-payments.use-case");
 const import_resident_payments_use_case_1 = require("../../application/use-cases/import-resident-payments.use-case");
+const import_residents_to_clerk_use_case_1 = require("../../application/use-cases/import-residents-to-clerk.use-case");
 const roles_decorator_1 = require("../decorators/roles.decorator");
 const fileGuard = (file) => {
     if (!file)
         throw new common_1.BadRequestException('No file provided');
 };
 let ImportController = class ImportController {
-    constructor(importXlsxUseCase, importBillsUseCase, importMaintenanceUseCase, importDepositsUseCase, importLandlordPaymentsUseCase, importResidentPaymentsUseCase) {
+    constructor(importXlsxUseCase, importBillsUseCase, importMaintenanceUseCase, importDepositsUseCase, importLandlordPaymentsUseCase, importResidentPaymentsUseCase, importResidentsToClerkUseCase) {
         this.importXlsxUseCase = importXlsxUseCase;
         this.importBillsUseCase = importBillsUseCase;
         this.importMaintenanceUseCase = importMaintenanceUseCase;
         this.importDepositsUseCase = importDepositsUseCase;
         this.importLandlordPaymentsUseCase = importLandlordPaymentsUseCase;
         this.importResidentPaymentsUseCase = importResidentPaymentsUseCase;
+        this.importResidentsToClerkUseCase = importResidentsToClerkUseCase;
     }
     async importAccommodation(file) {
         fileGuard(file);
@@ -64,6 +66,14 @@ let ImportController = class ImportController {
         fileGuard(file);
         const result = await this.importResidentPaymentsUseCase.execute(file.buffer);
         return { message: `Imported ${result.imported} resident payments (${result.skipped} skipped)`, ...result };
+    }
+    async importResidentsToClerk(file) {
+        fileGuard(file);
+        const result = await this.importResidentsToClerkUseCase.execute(file.buffer);
+        return {
+            message: `Clerk provisioning complete — ${result.created} created, ${result.skipped} skipped, ${result.errors.length} errors`,
+            ...result,
+        };
     }
 };
 exports.ImportController = ImportController;
@@ -121,6 +131,15 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ImportController.prototype, "importResidentPayments", null);
+__decorate([
+    (0, common_1.Post)('residents-clerk'),
+    (0, roles_decorator_1.Roles)('sysadmin', 'manager'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    __param(0, (0, common_1.UploadedFile)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ImportController.prototype, "importResidentsToClerk", null);
 exports.ImportController = ImportController = __decorate([
     (0, common_1.Controller)('import'),
     __metadata("design:paramtypes", [import_xlsx_use_case_1.ImportXlsxUseCase,
@@ -128,6 +147,7 @@ exports.ImportController = ImportController = __decorate([
         import_maintenance_use_case_1.ImportMaintenanceUseCase,
         import_deposits_use_case_1.ImportDepositsUseCase,
         import_landlord_payments_use_case_1.ImportLandlordPaymentsUseCase,
-        import_resident_payments_use_case_1.ImportResidentPaymentsUseCase])
+        import_resident_payments_use_case_1.ImportResidentPaymentsUseCase,
+        import_residents_to_clerk_use_case_1.ImportResidentsToClerkUseCase])
 ], ImportController);
 //# sourceMappingURL=import.controller.js.map

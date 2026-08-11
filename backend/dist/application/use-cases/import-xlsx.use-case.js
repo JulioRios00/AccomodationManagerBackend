@@ -67,6 +67,7 @@ let ImportXlsxUseCase = class ImportXlsxUseCase {
                 const contractEnd = row.contractEndDate;
                 const checkOut = row.checkOutDate;
                 const isCompleted = checkOut && checkOut < today;
+                const bookingStatus = isCompleted ? 'completed' : 'active';
                 await this.bookingRepo.save({
                     bedId: bed.id,
                     residentId: resident.id,
@@ -77,9 +78,12 @@ let ImportXlsxUseCase = class ImportXlsxUseCase {
                     rentAmount: row.rentAmount,
                     isHeadResident: row.residentIsHead,
                     isTemporary: false,
-                    status: isCompleted ? 'completed' : 'active',
+                    status: bookingStatus,
                     comments: row.comments,
                 });
+                if (bookingStatus === 'active') {
+                    await this.bedRepo.save({ id: bed.id, status: 'allocated' });
+                }
             }
             const tempName = row.tempResidentName;
             if (tempName && tempName.toLowerCase() !== 'new resident' && tempName.toLowerCase() !== 'resident full name') {

@@ -35,15 +35,25 @@ let ResidentTypeOrmRepository = class ResidentTypeOrmRepository {
         const saved = await this.repo.save(entity);
         return this.toDomain(saved);
     }
+    async findByEmail(email) {
+        const entity = await this.repo.findOne({ where: { email, active: true } });
+        return entity ? this.toDomain(entity) : null;
+    }
+    async findByClerkUserId(clerkUserId) {
+        const entity = await this.repo.findOne({ where: { clerkUserId, active: true } });
+        return entity ? this.toDomain(entity) : null;
+    }
     async delete(id) {
         await this.repo.update(id, { active: false });
     }
     toDomain(entity) {
         const r = new resident_entity_1.Resident();
         r.id = entity.id;
+        r.clerkUserId = entity.clerkUserId ?? null;
         r.fullName = entity.fullName;
         r.email = entity.email;
         r.telephone = entity.telephone;
+        r.gender = entity.gender ?? null;
         r.nationality = entity.nationality;
         r.personalId = entity.personalId;
         r.iban = entity.iban;

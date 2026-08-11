@@ -4,6 +4,7 @@ import { ImportMaintenanceUseCase } from '../../application/use-cases/import-mai
 import { ImportDepositsUseCase } from '../../application/use-cases/import-deposits.use-case';
 import { ImportLandlordPaymentsUseCase } from '../../application/use-cases/import-landlord-payments.use-case';
 import { ImportResidentPaymentsUseCase } from '../../application/use-cases/import-resident-payments.use-case';
+import { ImportResidentsToClerkUseCase } from '../../application/use-cases/import-residents-to-clerk.use-case';
 export declare class ImportController {
     private readonly importXlsxUseCase;
     private readonly importBillsUseCase;
@@ -11,7 +12,8 @@ export declare class ImportController {
     private readonly importDepositsUseCase;
     private readonly importLandlordPaymentsUseCase;
     private readonly importResidentPaymentsUseCase;
-    constructor(importXlsxUseCase: ImportXlsxUseCase, importBillsUseCase: ImportBillsUseCase, importMaintenanceUseCase: ImportMaintenanceUseCase, importDepositsUseCase: ImportDepositsUseCase, importLandlordPaymentsUseCase: ImportLandlordPaymentsUseCase, importResidentPaymentsUseCase: ImportResidentPaymentsUseCase);
+    private readonly importResidentsToClerkUseCase;
+    constructor(importXlsxUseCase: ImportXlsxUseCase, importBillsUseCase: ImportBillsUseCase, importMaintenanceUseCase: ImportMaintenanceUseCase, importDepositsUseCase: ImportDepositsUseCase, importLandlordPaymentsUseCase: ImportLandlordPaymentsUseCase, importResidentPaymentsUseCase: ImportResidentPaymentsUseCase, importResidentsToClerkUseCase: ImportResidentsToClerkUseCase);
     importAccommodation(file: Express.Multer.File): Promise<{
         imported: number;
         message: string;
@@ -39,6 +41,15 @@ export declare class ImportController {
     importResidentPayments(file: Express.Multer.File): Promise<{
         imported: number;
         skipped: number;
+        message: string;
+    }>;
+    importResidentsToClerk(file: Express.Multer.File): Promise<{
+        created: number;
+        skipped: number;
+        errors: {
+            email: string;
+            reason: string;
+        }[];
         message: string;
     }>;
 }

@@ -20,6 +20,10 @@ __decorate([
     __metadata("design:type", String)
 ], ResidentOrmEntity.prototype, "id", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ length: 200, nullable: true, unique: true }),
+    __metadata("design:type", String)
+], ResidentOrmEntity.prototype, "clerkUserId", void 0);
+__decorate([
     (0, typeorm_1.Column)({ length: 200 }),
     __metadata("design:type", String)
 ], ResidentOrmEntity.prototype, "fullName", void 0);
@@ -31,6 +35,10 @@ __decorate([
     (0, typeorm_1.Column)({ length: 50, nullable: true }),
     __metadata("design:type", String)
 ], ResidentOrmEntity.prototype, "telephone", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 50, nullable: true }),
+    __metadata("design:type", String)
+], ResidentOrmEntity.prototype, "gender", void 0);
 __decorate([
     (0, typeorm_1.Column)({ length: 100, nullable: true }),
     __metadata("design:type", String)

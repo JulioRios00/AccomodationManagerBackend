@@ -29,6 +29,7 @@ const company_orm_entity_1 = require("./typeorm/entities/company.orm-entity");
 const audit_log_orm_entity_1 = require("./typeorm/entities/audit-log.orm-entity");
 const property_space_orm_entity_1 = require("./typeorm/entities/property-space.orm-entity");
 const space_item_orm_entity_1 = require("./typeorm/entities/space-item.orm-entity");
+const role_permission_orm_entity_1 = require("./typeorm/entities/role-permission.orm-entity");
 const property_typeorm_repository_1 = require("./typeorm/repositories/property.typeorm-repository");
 const bed_typeorm_repository_1 = require("./typeorm/repositories/bed.typeorm-repository");
 const bedroom_typeorm_repository_1 = require("./typeorm/repositories/bedroom.typeorm-repository");
@@ -47,6 +48,7 @@ const deposit_transaction_typeorm_repository_1 = require("./typeorm/repositories
 const company_typeorm_repository_1 = require("./typeorm/repositories/company.typeorm-repository");
 const audit_log_typeorm_repository_1 = require("./typeorm/repositories/audit-log.typeorm-repository");
 const property_space_typeorm_repository_1 = require("./typeorm/repositories/property-space.typeorm-repository");
+const role_permission_typeorm_repository_1 = require("./typeorm/repositories/role-permission.typeorm-repository");
 const property_repository_1 = require("../../domain/property/property.repository");
 const bed_repository_1 = require("../../domain/bed/bed.repository");
 const bedroom_repository_1 = require("../../domain/bedroom/bedroom.repository");
@@ -65,13 +67,14 @@ const deposit_transaction_repository_1 = require("../../domain/deposit-transacti
 const company_repository_1 = require("../../domain/company/company.repository");
 const audit_log_repository_1 = require("../../domain/audit-log/audit-log.repository");
 const property_space_repository_1 = require("../../domain/property-space/property-space.repository");
+const role_permission_repository_1 = require("../../domain/role-permission/role-permission.repository");
 const ALL_ENTITIES = [
     property_orm_entity_1.PropertyOrmEntity, bed_orm_entity_1.BedOrmEntity, bedroom_orm_entity_1.BedroomOrmEntity, resident_orm_entity_1.ResidentOrmEntity, booking_orm_entity_1.BookingOrmEntity,
     landlord_orm_entity_1.LandlordOrmEntity, property_administrator_orm_entity_1.PropertyAdministratorOrmEntity, service_provider_orm_entity_1.ServiceProviderOrmEntity,
     maintenance_ticket_orm_entity_1.MaintenanceTicketOrmEntity, ticket_activity_log_orm_entity_1.TicketActivityLogOrmEntity, key_log_orm_entity_1.KeyLogOrmEntity,
     checkout_record_orm_entity_1.CheckoutRecordOrmEntity, rent_payment_orm_entity_1.RentPaymentOrmEntity, rent_payment_orm_entity_1.RentPaymentInstallmentOrmEntity,
     landlord_payment_orm_entity_1.LandlordPaymentOrmEntity, deposit_transaction_orm_entity_1.DepositTransactionOrmEntity, company_orm_entity_1.CompanyOrmEntity, audit_log_orm_entity_1.AuditLogOrmEntity,
-    property_space_orm_entity_1.PropertySpaceOrmEntity, space_item_orm_entity_1.SpaceItemOrmEntity,
+    property_space_orm_entity_1.PropertySpaceOrmEntity, space_item_orm_entity_1.SpaceItemOrmEntity, role_permission_orm_entity_1.RolePermissionOrmEntity,
 ];
 let DatabaseModule = class DatabaseModule {
 };
@@ -123,6 +126,7 @@ exports.DatabaseModule = DatabaseModule = __decorate([
             { provide: audit_log_repository_1.AUDIT_LOG_REPOSITORY, useClass: audit_log_typeorm_repository_1.AuditLogTypeOrmRepository },
             { provide: property_space_repository_1.PROPERTY_SPACE_REPOSITORY, useClass: property_space_typeorm_repository_1.PropertySpaceTypeOrmRepository },
             { provide: property_space_repository_1.SPACE_ITEM_REPOSITORY, useClass: property_space_typeorm_repository_1.SpaceItemTypeOrmRepository },
+            { provide: role_permission_repository_1.ROLE_PERMISSION_REPOSITORY, useClass: role_permission_typeorm_repository_1.RolePermissionTypeOrmRepository },
         ],
         exports: [
             property_repository_1.PROPERTY_REPOSITORY, bed_repository_1.BED_REPOSITORY, bedroom_repository_1.BEDROOM_REPOSITORY, resident_repository_1.RESIDENT_REPOSITORY, booking_repository_1.BOOKING_REPOSITORY,
@@ -130,7 +134,7 @@ exports.DatabaseModule = DatabaseModule = __decorate([
             maintenance_ticket_repository_1.MAINTENANCE_TICKET_REPOSITORY, ticket_activity_log_repository_1.TICKET_ACTIVITY_LOG_REPOSITORY, key_log_repository_1.KEY_LOG_REPOSITORY,
             checkout_record_repository_1.CHECKOUT_RECORD_REPOSITORY, rent_payment_repository_1.RENT_PAYMENT_REPOSITORY, rent_payment_repository_1.RENT_PAYMENT_INSTALLMENT_REPOSITORY,
             landlord_payment_repository_1.LANDLORD_PAYMENT_REPOSITORY, deposit_transaction_repository_1.DEPOSIT_TRANSACTION_REPOSITORY, company_repository_1.COMPANY_REPOSITORY, audit_log_repository_1.AUDIT_LOG_REPOSITORY,
-            property_space_repository_1.PROPERTY_SPACE_REPOSITORY, property_space_repository_1.SPACE_ITEM_REPOSITORY,
+            property_space_repository_1.PROPERTY_SPACE_REPOSITORY, property_space_repository_1.SPACE_ITEM_REPOSITORY, role_permission_repository_1.ROLE_PERMISSION_REPOSITORY,
         ],
     })
 ], DatabaseModule);

@@ -76,7 +76,7 @@ __decorate([
     __metadata("design:type", String)
 ], PropertyOrmEntity.prototype, "electricityAccountNumber", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
     __metadata("design:type", String)
 ], PropertyOrmEntity.prototype, "electricityKeypadCode", void 0);
 __decorate([
@@ -195,6 +195,18 @@ __decorate([
     (0, typeorm_1.Column)({ length: 200, nullable: true }),
     __metadata("design:type", String)
 ], PropertyOrmEntity.prototype, "propertyEmail", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 100, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "paymentReference", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 200, nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "propertySupplier", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", String)
+], PropertyOrmEntity.prototype, "officeKeysComment", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'uuid', nullable: true }),
     __metadata("design:type", String)

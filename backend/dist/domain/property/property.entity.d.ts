@@ -43,6 +43,9 @@ export declare class Property {
     propertyType: string | null;
     crn: string | null;
     propertyEmail: string | null;
+    paymentReference: string | null;
+    propertySupplier: string | null;
+    officeKeysComment: string | null;
     landlordId: string | null;
     active: boolean;
     createdAt: Date;

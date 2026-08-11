@@ -27,6 +27,7 @@ let GetBedsUseCase = class GetBedsUseCase {
         const bookingByBed = new Map(activeBookings.map((b) => [b.bedId, b]));
         return beds.map((bed) => ({
             ...bed,
+            status: bookingByBed.has(bed.id) ? 'allocated' : 'vacant',
             activeBooking: bookingByBed.get(bed.id) ?? null,
         }));
     }

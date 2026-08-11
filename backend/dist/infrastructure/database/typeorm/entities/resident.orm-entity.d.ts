@@ -1,9 +1,11 @@
 import { BookingOrmEntity } from './booking.orm-entity';
 export declare class ResidentOrmEntity {
     id: string;
+    clerkUserId: string;
     fullName: string;
     email: string;
     telephone: string;
+    gender: string;
     nationality: string;
     personalId: string;
     iban: string;
