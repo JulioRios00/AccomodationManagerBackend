@@ -7,7 +7,7 @@ import { Property } from '../../domain/property/property.entity';
 export class ImportBillsUseCase {
   constructor(@Inject(PROPERTY_REPOSITORY) private readonly repo: IPropertyRepository) {}
 
-  async execute(buffer: Buffer): Promise<{ updated: number; skipped: number }> {
+  async execute(buffer: Buffer): Promise<{ updated: number; skipped: number; gprnConflicts: number }> {
     const parsed = parseBills(buffer);
     const all = await this.repo.findAll();
     const byCode = new Map(all.map(p => [p.code.toLowerCase(), p]));
@@ -15,25 +15,38 @@ export class ImportBillsUseCase {
 
     let updated = 0;
     let skipped = 0;
+    let gprnConflicts = 0;
 
     // Electricity + Gas (matched by address)
     for (const row of parsed.electricityGas) {
       const prop = this.findByAddress(row.propertyAddress, byAddress, all);
       if (!prop) { skipped++; continue; }
-      await this.repo.save({
-        ...prop,
+      // Two properties cannot share the same GPRN, except "N/A" (used for properties
+      // without gas). If the row's GPRN is already in use by another property, keep
+      // the property's existing GPRN instead of overwriting it.
+      let gasGprn = row.gasGprn ?? prop.gasGprn;
+      if (row.gasGprn && this.isDuplicateGprn(row.gasGprn, prop.id, all)) {
+        gasGprn = prop.gasGprn;
+        gprnConflicts++;
+      }
+      // Mutate the shared property instance (referenced by both `byCode` and `byAddress`)
+      // so that later loops over the same property see these fields instead of the stale
+      // pre-import snapshot — otherwise a property present in more than one sheet has each
+      // loop's changes overwritten by the next.
+      Object.assign(prop, {
         electricityMprn: row.electricityMprn ?? prop.electricityMprn,
         electricitySupplier: row.electricitySupplier ?? prop.electricitySupplier,
         electricityAccountNumber: row.electricityAccountNumber ?? prop.electricityAccountNumber,
         electricityKeypadCode: row.electricityKeypadCode ?? prop.electricityKeypadCode,
-        gasGprn: row.gasGprn ?? prop.gasGprn,
+        gasGprn,
         gasSupplier: row.gasSupplier ?? prop.gasSupplier,
         gasAccountNumber: row.gasAccountNumber ?? prop.gasAccountNumber,
         gasPin: row.gasPin ?? prop.gasPin,
         crn: row.crn ?? prop.crn,
         propertyEmail: row.propertyEmail ?? prop.propertyEmail,
         keyCode: row.keyCode ?? prop.keyCode,
-      } as Partial<Property>);
+      });
+      await this.repo.save(prop);
       updated++;
     }
 
@@ -41,8 +54,7 @@ export class ImportBillsUseCase {
     for (const row of parsed.waste) {
       const prop = byCode.get(row.propertyCode.toLowerCase());
       if (!prop) { skipped++; continue; }
-      await this.repo.save({
-        ...prop,
+      Object.assign(prop, {
         wasteSupplier: row.wasteSupplier ?? prop.wasteSupplier,
         wasteAccountNumber: row.wasteAccountNumber ?? prop.wasteAccountNumber,
         wasteEmail: row.wasteEmail ?? prop.wasteEmail,
@@ -51,7 +63,8 @@ export class ImportBillsUseCase {
         wastePaymentType: row.wastePaymentType ?? prop.wastePaymentType,
         wasteMonthlyAmount: row.wasteMonthlyAmount ?? prop.wasteMonthlyAmount,
         wasteStatus: row.wasteStatus ?? prop.wasteStatus,
-      } as Partial<Property>);
+      });
+      await this.repo.save(prop);
       updated++;
     }
 
@@ -59,8 +72,7 @@ export class ImportBillsUseCase {
     for (const row of parsed.internet) {
       const prop = byCode.get(row.propertyCode.toLowerCase());
       if (!prop) { skipped++; continue; }
-      await this.repo.save({
-        ...prop,
+      Object.assign(prop, {
         internetSupplier: row.internetSupplier ?? prop.internetSupplier,
         internetAccountNumber: row.internetAccountNumber ?? prop.internetAccountNumber,
         internetEmail: row.internetEmail ?? prop.internetEmail,
@@ -72,11 +84,18 @@ export class ImportBillsUseCase {
         internetStatus: row.internetStatus ?? prop.internetStatus,
         internetContractEndDate: row.internetContractEndDate ?? prop.internetContractEndDate,
         internetNotes: row.internetNotes ?? prop.internetNotes,
-      } as Partial<Property>);
+      });
+      await this.repo.save(prop);
       updated++;
     }
 
-    return { updated, skipped };
+    return { updated, skipped, gprnConflicts };
+  }
+
+  private isDuplicateGprn(gprn: string, propertyId: string, all: Property[]): boolean {
+    const normalized = gprn.trim().toUpperCase();
+    if (normalized === 'N/A') return false;
+    return all.some(p => p.id !== propertyId && p.gasGprn?.trim().toUpperCase() === normalized);
   }
 
   private findByAddress(address: string, byAddress: Map<string, Property>, all: Property[]): Property | null {
