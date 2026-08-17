@@ -14,6 +14,8 @@ export interface ParsedRow {
   gasStatus: string | null;
   // Bed
   bedNumber: number;
+  /** Trailing letter from a bed number like "12B" — identifies which physical bedroom the bed is in. */
+  bedroomLetter: string | null;
   bedroomType: string;
   sex: string;
   bedSize: string;
@@ -78,6 +80,17 @@ function toBool(value: any): boolean {
   return String(value).toLowerCase() === 'yes' || value === true || value === 1;
 }
 
+// Bed number column accepts either a plain number ("12") or a number with a trailing
+// bedroom letter ("12B"), where the letter groups beds sharing a physical bedroom.
+const BED_NUMBER_RE = /^(\d+)\s*([A-Za-z])?$/;
+
+function parseBedNumber(value: any): { bedNumber: number; bedroomLetter: string | null } {
+  const raw = value === null || value === undefined ? '' : String(value).trim();
+  const match = raw.match(BED_NUMBER_RE);
+  if (!match) return { bedNumber: toNum(value), bedroomLetter: null };
+  return { bedNumber: Number(match[1]), bedroomLetter: match[2] ? match[2].toUpperCase() : null };
+}
+
 export function parseXlsx(buffer: Buffer): ParsedRow[] {
   const wb = XLSX.read(buffer, { type: 'buffer', cellDates: true });
   const ws = wb.Sheets['Control'];
@@ -108,7 +121,7 @@ export function parseXlsx(buffer: Buffer): ParsedRow[] {
       electricityStatus: toStr(r[8]),
       gasStatus: toStr(r[9]),
       // Bed (cols K-N, indices 10-13)
-      bedNumber: toNum(r[10]),
+      ...parseBedNumber(r[10]),
       bedroomType: toStr(r[11]) ?? '',
       sex: toStr(r[12]) ?? '',
       bedSize: toStr(r[13]) ?? '',

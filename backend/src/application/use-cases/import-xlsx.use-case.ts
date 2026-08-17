@@ -4,6 +4,7 @@ import { IPropertyRepository, PROPERTY_REPOSITORY } from '../../domain/property/
 import { IBedRepository, BED_REPOSITORY } from '../../domain/bed/bed.repository';
 import { IResidentRepository, RESIDENT_REPOSITORY } from '../../domain/resident/resident.repository';
 import { IBookingRepository, BOOKING_REPOSITORY } from '../../domain/booking/booking.repository';
+import { IBedroomRepository, BEDROOM_REPOSITORY } from '../../domain/bedroom/bedroom.repository';
 
 @Injectable()
 export class ImportXlsxUseCase {
@@ -12,11 +13,15 @@ export class ImportXlsxUseCase {
     @Inject(BED_REPOSITORY) private readonly bedRepo: IBedRepository,
     @Inject(RESIDENT_REPOSITORY) private readonly residentRepo: IResidentRepository,
     @Inject(BOOKING_REPOSITORY) private readonly bookingRepo: IBookingRepository,
+    @Inject(BEDROOM_REPOSITORY) private readonly bedroomRepo: IBedroomRepository,
   ) {}
 
   async execute(buffer: Buffer): Promise<{ imported: number }> {
     const rows = parseXlsx(buffer);
     let imported = 0;
+    // Caches bedroom lookups per property+letter for the duration of this import,
+    // so repeated rows for the same physical bedroom don't race to create duplicates.
+    const bedroomCache = new Map<string, string>();
 
     for (const row of rows) {
       // Upsert property
@@ -32,10 +37,15 @@ export class ImportXlsxUseCase {
         gasStatus: row.gasStatus,
       });
 
+      const bedroomId = row.bedroomLetter
+        ? await this.ensureBedroom(property.id, row.bedroomLetter, bedroomCache)
+        : null;
+
       // Upsert bed
       const bed = await this.bedRepo.upsertByPropertyAndNumber({
         propertyId: property.id,
         bedNumber: row.bedNumber,
+        bedroomId,
         bedroomType: row.bedroomType,
         sex: row.sex,
         bedSize: row.bedSize,
@@ -116,5 +126,17 @@ export class ImportXlsxUseCase {
     }
 
     return { imported };
+  }
+
+  private async ensureBedroom(propertyId: string, letter: string, cache: Map<string, string>): Promise<string> {
+    const cacheKey = `${propertyId}:${letter}`;
+    const cached = cache.get(cacheKey);
+    if (cached) return cached;
+
+    const name = `Bedroom ${letter}`;
+    const existing = await this.bedroomRepo.findByPropertyAndName(propertyId, name);
+    const bedroom = existing ?? (await this.bedroomRepo.save({ propertyId, name, active: true }));
+    cache.set(cacheKey, bedroom.id);
+    return bedroom.id;
   }
 }
