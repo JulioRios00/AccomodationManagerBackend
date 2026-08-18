@@ -91,10 +91,13 @@ function parseBedNumber(value: any): { bedNumber: number; bedroomLetter: string 
   return { bedNumber: Number(match[1]), bedroomLetter: match[2] ? match[2].toUpperCase() : null };
 }
 
-export function parseXlsx(buffer: Buffer): ParsedRow[] {
+export function parseXlsx(buffer: Buffer, sheetName: string = 'Control', required: boolean = true): ParsedRow[] {
   const wb = XLSX.read(buffer, { type: 'buffer', cellDates: true });
-  const ws = wb.Sheets['Control'];
-  if (!ws) throw new Error('Sheet "Control" not found in workbook');
+  const ws = wb.Sheets[sheetName];
+  if (!ws) {
+    if (required) throw new Error(`Sheet "${sheetName}" not found in workbook`);
+    return [];
+  }
 
   const rows: any[][] = XLSX.utils.sheet_to_json(ws, { header: 1, defval: null });
 
